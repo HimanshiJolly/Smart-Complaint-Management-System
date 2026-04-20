@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import './Navbar.css'; 
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
@@ -12,20 +13,34 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 30px', background: '#333', color: 'white' }}>
-      <h2><Link to="/" style={{ color: 'white', textDecoration: 'none' }}>Smart Complaints</Link></h2>
-      <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+    <nav className="navbar">
+      <div className="nav-logo">
+        <h2>
+          <Link to="/">Resolvio-Smart Complaint Management</Link>
+        </h2>
+      </div>
+
+      <div className="nav-links">
         {user ? (
           <>
-            <span style={{ color: '#4caf50' }}>Hi, {user.name} ({user.role})</span>
-            <button onClick={handleLogout} style={{ padding: '5px 10px', cursor: 'pointer', background: 'red', color: 'white', border: 'none', borderRadius: '4px' }}>
+            <span className="user-greeting">
+              Hi, {user.name} ({user.role})
+            </span>
+            <button onClick={handleLogout} className="logout-btn">
               Logout
             </button>
           </>
         ) : (
           <>
-            <Link to="/login" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
-            <Link to="/register" style={{ color: 'white', textDecoration: 'none' }}>Register</Link>
+            <Link to="/login">Login</Link>
+            <Link to="/register" style={{ 
+              background: 'var(--accent)', 
+              color: 'black', 
+              padding: '8px 16px', 
+              borderRadius: '10px' 
+            }}>
+              Register
+            </Link>
           </>
         )}
       </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import API from '../services/api';
+import './Register.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'user' });
@@ -23,20 +24,43 @@ const Register = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
-      <h2>Register</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        <input type="text" name="name" placeholder="Full Name" onChange={handleChange} required style={{ padding: '8px' }}/>
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} required style={{ padding: '8px' }}/>
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} required style={{ padding: '8px' }}/>
-        <select name="role" onChange={handleChange} style={{ padding: '8px' }}>
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
-        </select>
-        <button type="submit" style={{ padding: '10px', cursor: 'pointer', background: '#333', color: 'white', border: 'none' }}>Register</button>
-      </form>
-      <p style={{ marginTop: '10px' }}>Already have an account? <Link to="/login">Login here</Link></p>
+    <div className="register-container">
+      <div className="register-card">
+        <h2>Create Account</h2>
+        
+        {error && <p style={{ color: '#ff4d4d', textAlign: 'center', fontSize: '14px', marginBottom: '15px' }}>{error}</p>}
+        
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
+          <div className="input-group">
+            <label>Full Name</label>
+            <input type="text" name="name" placeholder="Enter your name" onChange={handleChange} required />
+          </div>
+
+          <div className="input-group">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="name@example.com" onChange={handleChange} required />
+          </div>
+
+          <div className="input-group">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="••••••••" onChange={handleChange} required />
+          </div>
+
+          <div className="input-group">
+            <label>I am a...</label>
+            <select name="role" onChange={handleChange}>
+              <option value="user">User / Complainant</option>
+              <option value="admin">Administrator</option>
+            </select>
+          </div>
+
+          <button type="submit" className="register-button">Get Started</button>
+        </form>
+
+        <p className="login-link">
+          Already have an account? <Link to="/login">Login here</Link>
+        </p>
+      </div>
     </div>
   );
 };
