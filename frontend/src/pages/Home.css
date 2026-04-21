@@ -1,41 +1,143 @@
-.home-wrapper {
-  padding: 40px 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+:root {
+  --primary-green: #0ed99e;
+  --dark-bg: #0f171a;
+  --card-bg: rgba(30, 39, 44, 0.6);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --text-main: #ffffff;
+  --text-muted: #a0aec0;
 }
 
-.hero-section {
-  text-align: center;
-  margin-bottom: 60px;
+.home-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+  color: var(--text-main);
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
-.hero-section h1 {
-  font-size: 48px;
-  font-weight: 800;
-  background: linear-gradient(to right, #ffffff, #0ed99e);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 10px;
+/* Common Card Style */
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  transition: transform 0.2s ease;
 }
 
-.stats-grid {
+/* Form Styling */
+.grid-form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
-.stat-card {
-  background: rgba(30, 39, 44, 0.4);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  padding: 30px;
-  text-align: center;
+.full-width { grid-column: span 2; }
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.stat-number {
-  font-size: 32px;
-  font-weight: 800;
-  color: #0ed99e;
-  display: block;
+.input-group label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+input, select, textarea {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px;
+  color: white;
+  outline: none;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 2px rgba(14, 217, 158, 0.2);
+}
+
+.btn-submit {
+  grid-column: span 2;
+  background: var(--primary-green);
+  color: #000;
+  font-weight: 700;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* Complaint Cards */
+.complaint-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.complaint-card {
+  display: flex;
+  flex-direction: row; /* Horizontal layout like the image */
+  padding: 0;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 150px;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 20px;
+  flex: 1;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.category-tag {
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.status-pill {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.status-pill.pending { color: #f6ad55; background: rgba(246, 173, 85, 0.1); }
+.status-pill.in-progress { color: #4299e1; background: rgba(66, 153, 225, 0.1); }
+.status-pill.resolved { color: #48bb78; background: rgba(72, 187, 120, 0.1); }
+
+/* Admin Specifics */
+.btn-urgent {
+  background: #f56565;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.urgent-alert {
+  background: rgba(245, 101, 101, 0.1);
+  border-left: 4px solid #f56565;
+  padding: 15px;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
