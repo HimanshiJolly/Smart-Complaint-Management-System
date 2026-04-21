@@ -4,6 +4,8 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Footer from './components/Footer';
+import './main.css';
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
               <Route path="/register" element={<Register />} />
             </Routes>
           </main>
+          <Footer/>
         </div>
       </Router>
     </AuthProvider>

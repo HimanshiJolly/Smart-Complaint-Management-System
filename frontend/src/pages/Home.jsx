@@ -1,9 +1,111 @@
 import { useContext, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import API from '../services/api';
-import './Home.css'; // Ensure this is imported
+import './Home.css';
 
+// ---------------- Landing Page ----------------
+const LandingPage = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="landing">
+      {/* Hero Section */}
+      <div className="hero">
+  
+  {/* LEFT TEXT */}
+  <div className="hero-text">
+  <h1 className="main-title">Resolvio</h1>
+
+  <h2 className="sub-title">
+    Smart Complaint System <br />
+    <span>for College Students</span>
+  </h2>
+
+  <p className="hero-desc">
+    Raise issues in your college campus, track progress,
+    and get them resolved faster.
+  </p>
+
+  <div className="landing-buttons">
+    <button onClick={() => navigate('/login')} className="btn-submit">Login</button>
+    <button onClick={() => navigate('/register')} className="btn-submit">Register</button>
+  </div>
+</div>
+
+  {/* RIGHT IMAGE SLIDER */}
+  <div className="hero-slider">
+    <img src="https://assets.api.gamma.app/eon8uhhu3pco7xo/screenshots/akl2525s6amkn29/r4hay7p1qqxnn6t/slide/4xRJhgC9EZ4FAIxX3fr1HZ2wh7Y" alt="campus" />
+    <img src="https://rocketflow.in/resources/blog/images/complaint-management-banner.jpeg" alt="campus" />
+    <img src="https://inclusion.syr.edu/wp-content/uploads/2016/12/Complaints-768x513.jpg" alt="campus" />
+    <img src="https://medicaldialogues.in/h-upload/2023/01/06/196656-ragging-complaint.jpg" alt="campus" />
+  </div>
+
+</div>
+
+      {/* About Section */}
+      <div className="about-section">
+        <h2>What is this platform about?</h2>
+        <p>
+          Resolvio is designed specifically for college students to raise complaints related to
+          campus facilities like cleanliness, infrastructure, hostel, and management.
+        </p>
+
+       <div className="features">
+
+  <div className="feature-card">
+    <div className="icon">📢</div>
+    <h3>Easy Complaint Submission</h3>
+    <p>Report issues quickly with details and images</p>
+  </div>
+
+  <div className="feature-card">
+    <div className="icon">📊</div>
+    <h3>Track Progress</h3>
+    <p>Monitor complaint status in real-time</p>
+  </div>
+
+  <div className="feature-card">
+    <div className="icon">⚡</div>
+    <h3>Faster Resolution</h3>
+    <p>Helps administration respond efficiently</p>
+  </div>
+</div>
+<div className="extra-section">
+
+  <h2>Why Choose Resolvio?</h2>
+
+  <div className="extra-grid">
+
+    <div>
+      <h4>🎯 Student-Centered</h4>
+      <p>Designed specifically for college environments and student needs.</p>
+    </div>
+
+    <div>
+      <h4>🔐 Secure & Transparent</h4>
+      <p>Every complaint is tracked with full visibility and accountability.</p>
+    </div>
+
+    <div>
+      <h4>📈 Data Insights</h4>
+      <p>Admins can analyze patterns and improve campus facilities.</p>
+    </div>
+
+    <div>
+      <h4>⚙️ Efficient Workflow</h4>
+      <p>Automated prioritization ensures urgent issues are handled first.</p>
+    </div>
+
+  </div>
+
+</div>
+      </div>
+    </div>
+  );
+};
+
+// ---------------- Main Home ----------------
 const Home = () => {
   const { user } = useContext(AuthContext);
   const [complaints, setComplaints] = useState([]);
@@ -39,7 +141,7 @@ const Home = () => {
 
       setNewComplaint({ title: '', description: '', category: 'Cleanliness' });
       setImageFile(null);
-      document.getElementById('file-upload').value = ""; 
+      document.getElementById('file-upload').value = "";
       fetchComplaints();
     } catch (error) {
       console.error("Error submitting complaint", error);
@@ -68,19 +170,32 @@ const Home = () => {
       console.error("Error fetching urgent complaint", error);
     }
   };
+const handleClear = async (id) => {
+  try {
+    await API.put(`/complaints/clear/${id}`);
 
-  if (!user) {
-    return (
-      <div className="auth-prompt">
-        <h2>Welcome to Resolvio</h2>
-        <p>Please <Link to="/login">Login</Link> or <Link to="/register">Register</Link> to continue.</p>
-      </div>
+    // ✅ update UI instantly
+    setComplaints(prev =>
+      prev.map(c =>
+        c._id === id ? { ...c, isClearedByUser: true } : c
+      )
     );
+
+  } catch (error) {
+    console.error("Error clearing complaint", error);
   }
+};
+  // 👉 If NOT logged in → show Landing Page
+  if (!user) {
+    return <LandingPage />;
+  }
+const visibleComplaints = complaints.filter(
+  (c) => !(user.role === 'user' && c.isClearedByUser === true)
+);
 
   return (
     <div className="home-container">
-      
+
       {/* Admin Section */}
       {user.role === 'admin' && (
         <section className="admin-panel card">
@@ -90,7 +205,7 @@ const Home = () => {
               ⚡ Get Next Urgent Task
             </button>
           </div>
-          
+
           {urgentComplaint && (
             <div className="urgent-alert">
               <div className="urgent-info">
@@ -113,15 +228,15 @@ const Home = () => {
           <form onSubmit={handleComplaintSubmit} className="grid-form">
             <div className="input-group">
               <label>Complaint Title</label>
-              <input 
-                type="text" 
-                placeholder="What is the issue?" 
-                value={newComplaint.title} 
-                onChange={(e) => setNewComplaint({ ...newComplaint, title: e.target.value })} 
-                required 
+              <input
+                type="text"
+                placeholder="What is the issue?"
+                value={newComplaint.title}
+                onChange={(e) => setNewComplaint({ ...newComplaint, title: e.target.value })}
+                required
               />
             </div>
-            
+
             <div className="input-group">
               <label>Category</label>
               <select value={newComplaint.category} onChange={(e) => setNewComplaint({ ...newComplaint, category: e.target.value })}>
@@ -135,15 +250,15 @@ const Home = () => {
 
             <div className="input-group full-width">
               <label>Description</label>
-              <textarea 
-                placeholder="Provide details about the problem..." 
-                rows="4" 
-                value={newComplaint.description} 
-                onChange={(e) => setNewComplaint({ ...newComplaint, description: e.target.value })} 
-                required 
+              <textarea
+                placeholder="Provide details about the problem..."
+                rows="4"
+                value={newComplaint.description}
+                onChange={(e) => setNewComplaint({ ...newComplaint, description: e.target.value })}
+                required
               />
             </div>
-            
+
             <div className="input-group full-width file-input-wrapper">
               <label>Attach Image (Optional)</label>
               <input id="file-upload" type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files[0])} />
@@ -159,7 +274,7 @@ const Home = () => {
         <h3>{user.role === 'admin' ? 'System Overview' : 'Your History'}</h3>
         {complaints.length === 0 ? <p className="empty-msg">No complaints recorded yet.</p> : (
           <div className="complaint-grid">
-            {complaints.map(complaint => (
+            {visibleComplaints.map(complaint => (
               <div key={complaint._id} className="complaint-card card">
                 {complaint.imageUrl && (
                   <div className="card-image">
@@ -173,22 +288,36 @@ const Home = () => {
                   </div>
                   <p className="description">{complaint.description}</p>
                   <div className="card-footer">
-                    <span className={`status-pill ${complaint.status.toLowerCase().replace(' ', '-')}`}>
-                      {complaint.status}
-                    </span>
-                    
-                    {user.role === 'admin' && (
-                      <select 
-                        className="status-updater"
-                        value={complaint.status} 
-                        onChange={(e) => handleStatusUpdate(complaint._id, e.target.value)}
-                      >
-                        <option value="Pending">Pending</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Resolved">Resolved</option>
-                      </select>
-                    )}
-                  </div>
+  <span className={`status-pill ${complaint.status.toLowerCase().replace(' ', '-')}`}>
+    {complaint.status}
+  </span>
+
+  {user.role === 'admin' && (
+    <select
+      className="status-updater"
+      value={complaint.status}
+      onChange={(e) => handleStatusUpdate(complaint._id, e.target.value)}
+    >
+      <option value="Pending">Pending</option>
+      <option value="In Progress">In Progress</option>
+      <option value="Resolved">Resolved</option>
+    </select>
+  )}
+
+  {/* ✅ CLEAR BUTTON */}
+  {user.role === 'user' && complaint.status === 'Resolved' && (
+    <button
+      className="btn-delete"
+      onClick={() => {
+        if (window.confirm("Mark this complaint as cleared?")) {
+          handleClear(complaint._id);
+        }
+      }}
+    >
+      Clear
+    </button>
+  )}
+</div>
                 </div>
               </div>
             ))}

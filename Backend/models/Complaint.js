@@ -9,10 +9,19 @@ const ComplaintSchema = new mongoose.Schema({
     enum: ['Cleanliness', 'Management', 'Infrastructure', 'Food/Hostel', 'Other'], 
     default: 'Other' 
   },
-  status: { type: String, enum: ['Pending', 'In Progress', 'Resolved'], default: 'Pending' },
+  status: { 
+    type: String, 
+    enum: ['Pending', 'In Progress', 'Resolved'], 
+    default: 'Pending' 
+  },
   priority: { type: Number, enum: [1, 2, 3], default: 1 },
-  // ADDED: Field to store image URL
-  imageUrl: { type: String, default: null } 
+  imageUrl: { type: String, default: null },
+
+  isClearedByUser: {
+    type: Boolean,
+    default: false
+  }
+
 }, { timestamps: true });
 
-module.exports = mongoose.model('Complaint', ComplaintSchema);
+module.exports = mongoose.model('Complaint', ComplaintSchema);  // ✅ THIS LINE FIXES EVERYTHING

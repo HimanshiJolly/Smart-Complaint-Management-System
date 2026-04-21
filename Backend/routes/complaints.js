@@ -7,6 +7,7 @@ const { protect, adminOnly } = require('../middleware/auth');
 const ComplaintPriorityQueue = require('../utils/PriorityQueue');
 const router = express.Router();
 
+
 // --- AUTO-CREATE UPLOADS DIRECTORY ---
 const uploadDir = path.join(__dirname, '../uploads');
 if (!fs.existsSync(uploadDir)) {
@@ -66,15 +67,19 @@ router.post('/', protect, upload.single('image'), async (req, res) => {
 router.get('/', protect, async (req, res) => {
   try {
     let complaints;
+
     if (req.user.role === 'admin') {
-      // Admins see everything, newest first
       complaints = await Complaint.find().sort({ createdAt: -1 });
     } else {
-      // Standard users only see their own complaints
-      complaints = await Complaint.find({ userId: req.user.id }).sort({ createdAt: -1 });
+      complaints = await Complaint.find({
+        userId: req.user.id,
+        isClearedByUser: false   // ✅ safe filter
+      }).sort({ createdAt: -1 });
     }
+
     res.json(complaints);
   } catch (err) {
+    console.error("GET /complaints ERROR:", err); // 👈 ADD THIS
     res.status(500).json({ error: err.message });
   }
 });
@@ -101,22 +106,34 @@ router.get('/urgent', protect, adminOnly, async (req, res) => {
   }
 });
 
-
-// 4. ADMIN ONLY: UPDATE COMPLAINT STATUS
-router.put('/:id', protect, adminOnly, async (req, res) => {
+// ✅ 5. USER: CLEAR (PUT THIS FIRST)
+router.put('/clear/:id', protect, async (req, res) => {
   try {
-    const { status } = req.body;
-    const updatedComplaint = await Complaint.findByIdAndUpdate(
+    const complaint = await Complaint.findByIdAndUpdate(
       req.params.id,
-      { status },
-      { new: true } // Return the updated document
+      { isClearedByUser: true },
+      { returnDocument: 'after' }
     );
-    res.json(updatedComplaint);
+
+    res.json(complaint);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
 
-// Ensure the router is exported at the very bottom!
+// ✅ 4. ADMIN UPDATE (PUT THIS AFTER)
+router.put('/:id', protect, adminOnly, async (req, res) => {
+  try {
+    const { status } = req.body;
+    const updatedComplaint = await Complaint.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+    res.json(updatedComplaint);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});// Ensure the router is exported at the very bottom!
 module.exports = router;
