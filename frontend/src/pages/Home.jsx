@@ -78,22 +78,26 @@ const LandingPage = () => {
   <div className="extra-grid">
 
     <div>
-      <h4>🎯 Student-Centered</h4>
+       <div className="icon">🎯</div>
+      <h4>Student-Centered</h4>
       <p>Designed specifically for college environments and student needs.</p>
     </div>
 
     <div>
-      <h4>🔐 Secure & Transparent</h4>
+      <div className="icon">🔐</div>
+      <h4> Secure & Transparent</h4>
       <p>Every complaint is tracked with full visibility and accountability.</p>
     </div>
 
     <div>
-      <h4>📈 Data Insights</h4>
+      <div className="icon">📈</div>
+      <h4>Data Insights</h4>
       <p>Admins can analyze patterns and improve campus facilities.</p>
     </div>
 
     <div>
-      <h4>⚙️ Efficient Workflow</h4>
+      <div className="icon">⚙️</div>
+      <h4>Efficient Workflow</h4>
       <p>Automated prioritization ensures urgent issues are handled first.</p>
     </div>
 

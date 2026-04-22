@@ -1,5 +1,5 @@
 .footer {
-  background: #ffffff;
+  background: beige;
   color: #1a202c;
   margin-top: 80px;
   padding-top: 50px;
@@ -37,7 +37,12 @@
 .footer-links li {
   margin-bottom: 8px;
 }
-
+.footer-links h4 {
+  color: #10b981;
+}
+.footer-contact h4 {
+  color: #10b981;
+}
 .footer-links a {
   text-decoration: none;
   color: #64748b;

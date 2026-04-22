@@ -20,7 +20,7 @@
   margin-top: 40px;
 }
 .feature-card {
-  background: #ffffff;
+  background: beige;
   border: 1px solid var(--border-color);
   border-radius: 18px;
   padding: 28px;
@@ -33,13 +33,13 @@
 
 /* ICON STYLE */
 .feature-card .icon {
-  width: 45px;
-  height: 45px;
+  width: 55px;
+  height: 55px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 40px;
   background: rgba(16, 185, 129, 0.1);
 }
 
@@ -78,9 +78,11 @@
   gap: 30px;
   text-align: left;
 }
-
+.extra-grid .icon {
+  font-size: 30px;
+}
 .extra-grid div {
-  background: #ffffff;
+  background: beige;
   padding: 20px;
   border-radius: 14px;
   border: 1px solid var(--border-color);
