@@ -1,147 +1,211 @@
-body {
+/* =========================
+   🌍 RESET
+========================= */
+* {
   margin: 0;
   padding: 0;
-  /* This ensures the background covers the whole screen */
-  min-height: 100vh; 
-  background-color: #0A0F11 !important; 
-  /* The glow effects you liked */
-  
-  background-image: 
-    radial-gradient(at 0% 100%, rgba(138, 43, 226, 0.15) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(0, 191, 255, 0.1) 0px, transparent 50%) !important;
-  background-attachment: fixed;
-  background-size: cover;
+  box-sizing: border-box;
 }
+
+/* =========================
+   🎨 THEME VARIABLES
+========================= */
 :root {
-  /* Color Palette */
-  --bg: #0A0F11; 
-  --nav-bg: rgba(0, 0, 0, 0.89);
-  --text: #9ca3af;
-  --text-h: #f5f5dc; /* Beige */
-  --border: rgba(255, 255, 255, 0.08);
-  --accent: #0ed99e; /* Mint Green */
-  --accent-bg: rgba(14, 217, 158, 0.1);
-  --accent-border: rgba(14, 217, 158, 0.5);
-  --social-bg: rgba(255, 255, 255, 0.05);
-  --shadow: rgba(0, 0, 0, 0.5) 0 10px 15px -3px;
+  --bg-main: #f4f6f8;
+  --bg-secondary: #ffffff;
 
-  /* Typography */
-  --sans: "Manrope", system-ui, -apple-system, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --primary: #c62828;
+  --primary-hover: #b71c1c;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color: var(--text);
-  background: var(--bg);
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
+  --text-main: #1f2937;
+  --text-secondary: #6b7280;
+
+  --border-light: #e5e7eb;
+  --input-bg: #f9fafb;
+
+  --shadow-soft: rgba(0, 0, 0, 0.08);
 }
 
+/* =========================
+   🌈 ANIMATED BACKGROUND
+========================= */
+body {
+  font-family: "Manrope", sans-serif;
+  background: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
 
+  /* soft animated gradient */
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(198, 40, 40, 0.08), transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(198, 40, 40, 0.05), transparent 40%);
+  animation: bgMove 10s ease-in-out infinite alternate;
+}
+
+/* Background Animation */
+@keyframes bgMove {
+  from {
+    background-position: 0% 0%, 100% 100%;
+  }
+  to {
+    background-position: 20% 30%, 80% 70%;
+  }
+}
+
+/* =========================
+   📦 ROOT
+========================= */
 #root {
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-h1, h2 {
-  font-family: var(--sans);
-  font-weight: 800;
-  color: var(--text-h);
-  margin: 0;
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  @media (max-width: 1024px) { font-size: 36px; }
-}
-
-.counter {
-  font-family: var(--mono);
-  font-size: 16px;
-  padding: 5px 14px;
-  border-radius: 20px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 1px solid var(--accent-border);
-  display: inline-flex;
-  margin-bottom: 24px;
-  backdrop-filter: blur(5px);
-}
-
-.hero {
-  position: relative;
-  .base, .framework, .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-  .base { width: 170px; position: relative; z-index: 0; filter: drop-shadow(0 0 20px rgba(0,0,0,0.5)); }
-  .framework, .vite { position: absolute; }
-  .framework {
-    z-index: 1; top: 34px; height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg) scale(1.4);
-  }
-  .vite {
-    z-index: 0; top: 107px; height: 26px; width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg) scale(0.8);
-  }
-}
-
-#center {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
+/* =========================
+   📄 PAGE CONTAINER
+========================= */
+.page-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
   padding: 40px 20px;
 }
 
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  background: rgba(255,255,255,0.02);
-  
-  & > div {
-    flex: 1;
-    padding: 32px;
-  }
+/* =========================
+   🧾 CARD (Reusable)
+========================= */
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 24px;
+
+  box-shadow: 0 10px 30px var(--shadow-soft);
+
+  transition: all 0.3s ease;
 }
 
-#docs { border-right: 1px solid var(--border); }
-
-#next-steps ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 12px;
-  
-  a {
-    color: var(--text-h);
-    font-size: 15px;
-    border-radius: 10px;
-    background: var(--social-bg);
-    padding: 8px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    border: 1px solid var(--border);
-    transition: all 0.3s ease;
-
-    &:hover {
-      background: var(--accent-bg);
-      border-color: var(--accent);
-      transform: translateY(-2px);
-    }
-  }
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.12);
 }
 
-#spacer { height: 88px; border-top: 1px solid var(--border); }
+/* =========================
+   ✨ HEADINGS
+========================= */
+h1, h2, h3 {
+  color: var(--text-main);
+  font-weight: 700;
+}
 
-@media (max-width: 1024px) {
-  #next-steps { flex-direction: column; }
-  #docs { border-right: none; border-bottom: 1px solid var(--border); }
-  #next-steps ul { flex-wrap: wrap; justify-content: center; }
+h1 { font-size: 2.5rem; margin-bottom: 20px; }
+h2 { font-size: 1.5rem; }
+
+/* =========================
+   🔤 INPUTS
+========================= */
+input,
+select,
+textarea {
+  background: var(--input-bg);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--text-main);
+
+  transition: all 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.15);
+}
+
+/* Placeholder */
+input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* =========================
+   🔽 DROPDOWN FIX
+========================= */
+select option {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* =========================
+   🔘 BUTTONS
+========================= */
+button {
+  font-family: inherit;
+  border-radius: 10px;
+  padding: 12px 18px;
+  border: none;
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+/* Primary Button */
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+
+  box-shadow: 0 4px 15px rgba(198, 40, 40, 0.2);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(198, 40, 40, 0.3);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+/* =========================
+   🔗 LINKS
+========================= */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   📊 SCROLLBAR
+========================= */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 10px;
+}
+
+/* =========================
+   📱 RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 20px 15px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
 }

@@ -1,95 +1,211 @@
-:root {
-  /* The High-End Dark Palette */
-  --bg: #0A0F11;
-  --card-bg: rgba(30, 39, 44, 0.6); /* Translucent for glass effect */
-  --text: #9ca3af;
-  --text-h: #ffffff;
-  --border: rgba(255, 255, 255, 0.08);
-  --accent: #0ED99E; /* The Mint Green from the image */
-  --accent-glow: rgba(14, 217, 158, 0.2);
-  --purple-glow: rgba(138, 43, 226, 0.15);
-  
-  --sans: "Manrope", system-ui, sans-serif;
-  --heading: "Manrope", system-ui, sans-serif;
-
-  font-family: var(--sans);
-  font-size: 18px;
-  line-height: 145%;
-  color: var(--text);
-  background-color: var(--bg);
-  
-  /* Background Glows */
-  background-image: 
-    radial-gradient(at 10% 80%, var(--purple-glow) 0px, transparent 45%),
-    radial-gradient(at 90% 10%, rgba(0, 191, 255, 0.1) 0px, transparent 40%);
-  background-attachment: fixed;
-}
-
-body {
+/* =========================
+   🌍 RESET
+========================= */
+* {
   margin: 0;
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-   margin: 0 !important;
-  padding: 0 !important;
-  background-color: #0A0F11 !important; /* Forces the dark color */
-  background-image: 
-    radial-gradient(at 0% 100%, rgba(138, 43, 226, 0.15) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(0, 191, 255, 0.1) 0px, transparent 50%) !important;
-  background-attachment: fixed;
-  color: white;
-  min-height: 100vh;
-}
-
-
-#root {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  padding: 0;
   box-sizing: border-box;
 }
 
-/* Glassmorphism Card Style - Use this class in your Components */
-.glass-card {
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  border-radius: 20px;
+/* =========================
+   🎨 THEME VARIABLES
+========================= */
+:root {
+  --bg-main: #f4f6f8;
+  --bg-secondary: #ffffff;
+
+  --primary: #c62828;
+  --primary-hover: #b71c1c;
+
+  --text-main: #1f2937;
+  --text-secondary: #6b7280;
+
+  --border-light: #e5e7eb;
+  --input-bg: #f9fafb;
+
+  --shadow-soft: rgba(0, 0, 0, 0.08);
+}
+
+/* =========================
+   🌈 ANIMATED BACKGROUND
+========================= */
+body {
+  font-family: "Manrope", sans-serif;
+  background: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  /* soft animated gradient */
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(198, 40, 40, 0.08), transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(198, 40, 40, 0.05), transparent 40%);
+  animation: bgMove 10s ease-in-out infinite alternate;
+}
+
+/* Background Animation */
+@keyframes bgMove {
+  from {
+    background-position: 0% 0%, 100% 100%;
+  }
+  to {
+    background-position: 20% 30%, 80% 70%;
+  }
+}
+
+/* =========================
+   📦 ROOT
+========================= */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================
+   📄 PAGE CONTAINER
+========================= */
+.page-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+/* =========================
+   🧾 CARD (Reusable)
+========================= */
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+
+  box-shadow: 0 10px 30px var(--shadow-soft);
+
+  transition: all 0.3s ease;
 }
 
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+}
+
+/* =========================
+   ✨ HEADINGS
+========================= */
 h1, h2, h3 {
-  font-family: var(--heading);
-  color: var(--text-h);
+  color: var(--text-main);
   font-weight: 700;
-  letter-spacing: -0.02em;
 }
 
-h1 { font-size: 3rem; margin: 1.5rem 0; }
+h1 { font-size: 2.5rem; margin-bottom: 20px; }
 h2 { font-size: 1.5rem; }
 
-/* Buttons to match the "Submit" in your image */
-button {
-  font-family: var(--sans);
-  font-weight: 600;
-  cursor: pointer;
+/* =========================
+   🔤 INPUTS
+========================= */
+input,
+select,
+textarea {
+  background: var(--input-bg);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--text-main);
+
   transition: all 0.2s ease;
 }
 
-.btn-primary {
-  background: var(--accent);
-  color: #000;
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.15);
+}
+
+/* Placeholder */
+input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* =========================
+   🔽 DROPDOWN FIX
+========================= */
+select option {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* =========================
+   🔘 BUTTONS
+========================= */
+button {
+  font-family: inherit;
+  border-radius: 10px;
+  padding: 12px 18px;
   border: none;
-  padding: 12px 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px var(--accent-glow);
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+/* Primary Button */
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+
+  box-shadow: 0 4px 15px rgba(198, 40, 40, 0.2);
 }
 
 .btn-primary:hover {
+  background: var(--primary-hover);
   transform: translateY(-2px);
-  filter: brightness(1.1);
+  box-shadow: 0 8px 25px rgba(198, 40, 40, 0.3);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+/* =========================
+   🔗 LINKS
+========================= */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   📊 SCROLLBAR
+========================= */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 10px;
+}
+
+/* =========================
+   📱 RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 20px 15px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
 }

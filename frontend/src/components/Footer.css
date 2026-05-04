@@ -1,32 +1,47 @@
+/* =========================
+   🔻 FOOTER
+========================= */
 .footer {
-  background: beige;
-  color: #1a202c;
+  background: #ffffff;
+  color: var(--text-main);
   margin-top: 80px;
   padding-top: 50px;
-  border-top: 1px solid #e2e8f0;
+
+  border-top: 1px solid var(--border-light);
 }
 
+/* =========================
+   📦 CONTAINER
+========================= */
 .footer-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 40px;
+
   max-width: 1100px;
   margin: auto;
   padding: 0 20px;
 }
 
+/* =========================
+   🏷 BRAND
+========================= */
 .footer-brand h2 {
-  color: #10b981;
+  color: var(--primary);
   margin-bottom: 10px;
 }
 
 .footer-brand p {
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
+/* =========================
+   🔗 LINKS
+========================= */
 .footer-links h4,
 .footer-contact h4 {
   margin-bottom: 15px;
+  color: var(--primary);
 }
 
 .footer-links ul {
@@ -37,36 +52,41 @@
 .footer-links li {
   margin-bottom: 8px;
 }
-.footer-links h4 {
-  color: #10b981;
-}
-.footer-contact h4 {
-  color: #10b981;
-}
+
 .footer-links a {
   text-decoration: none;
-  color: #64748b;
+  color: var(--text-secondary);
   transition: 0.2s;
 }
 
 .footer-links a:hover {
-  color: #10b981;
+  color: var(--primary);
 }
 
+/* =========================
+   📞 CONTACT
+========================= */
 .footer-contact p {
-  color: #64748b;
+  color: var(--text-secondary);
   margin-bottom: 6px;
 }
 
+/* =========================
+   🔽 BOTTOM
+========================= */
 .footer-bottom {
   text-align: center;
   margin-top: 40px;
   padding: 15px 0;
-  border-top: 1px solid #e2e8f0;
+
+  border-top: 1px solid var(--border-light);
   font-size: 0.9rem;
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
+/* =========================
+   📱 MOBILE
+========================= */
 @media (max-width: 768px) {
   .footer-container {
     grid-template-columns: 1fr;
