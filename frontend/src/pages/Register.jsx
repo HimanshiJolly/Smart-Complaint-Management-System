@@ -5,390 +5,365 @@ import './Register.css';
 
 const Register = () => {
 
-  const courseBranches = {
-    "B.Tech": ["CSE", "ECE", "ME", "CE", "EEE"],
-    "MBA": ["Finance", "Marketing", "HR"],
-    "BCA": ["General", "AI", "Data Science"]
-  };
+  const navigate = useNavigate();
 
-  const [step, setStep] = useState(1);
+  const [error, setError] = useState('');
+
+  const [passportPhoto, setPassportPhoto] = useState(null);
+  const [idProof, setIdProof] = useState(null);
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    enrollmentNo: '',
+    fullName: '',
+    collegeEmail: '',
+    rollNumber: '',
+    phone: '',
     course: '',
     branch: '',
-    year: '',
-    section: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
-    hostel: 'day',
+    department: '',
+    semester: '',
+    address: '',
+    fatherName: '',
+    motherName: '',
+    mentorName: '',
+    dob: '',
+    gender: '',
+    accommodation: 'Day Scholar',
+    hostelName: '',
     roomNumber: '',
-    photo: null
+    password: '',
+    role: 'user'
   });
 
-  const [idCard, setIdCard] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
-const validateStep1 = () => {
-  const { name, email, phone, enrollmentNo, course, branch, year } = formData;
-
-  if (!name.trim()) return "Name is required";
-
-  if (!/^\S+@\S+\.\S+$/.test(email)) {
-    return "Enter valid email";
-  }
-
-  if (!/^\d{10}$/.test(phone)) {
-    return "Phone must be exactly 10 digits";
-  }
-
-  if (!/^\d{10}$/.test(enrollmentNo)) {
-    return "Enrollment must be exactly 10 digits (numbers only)";
-  }
-
-  if (!course) return "Select course";
-  if (!branch) return "Select branch";
-  if (!year) return "Select year";
-
-  return "";
-};
-
-const validateStep2 = () => {
-  const { password, confirmPassword } = formData;
-
-  if (!password) return "Password required";
-
-  if (!/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/.test(password)) {
-    return "Password must contain uppercase, number & special character";
-  }
-
-  if (!confirmPassword) return "Confirm password required";
-
-  if (password !== confirmPassword) {
-    return "Passwords do not match";
-  }
-
-  return "";
-};
-
-/* ❌ REMOVED validateFields (duplicate & unnecessary) */
-
-const getPasswordStrength = (password) => {
-  if (!password) return 0;
-
-  let score = 0;
-
-  // 1. Length (very smooth scaling)
-  if (password.length >= 6) score += 20;
-  if (password.length >= 8) score += 10;
-
-  // 2. Uppercase
-  if (/[A-Z]/.test(password)) score += 20;
-
-  // 3. Numbers
-  if (/[0-9]/.test(password)) score += 20;
-
-  // 4. Special characters
-  if (/[@$!%*?&]/.test(password)) score += 20;
-
-  // 5. Extra bonus (not harsh)
-  if (password.length >= 12) score += 10;
-
-  return Math.min(score, 100);
-};
-const getStrengthClass = (score) => {
-  if (score === 0) return "";
-  if (score <= 30) return "strength-1";
-  if (score <= 60) return "strength-2";
-  if (score <= 80) return "strength-3";
-  return "strength-4";
-};
-// ================= PROGRESS LOGIC (VALID DATA BASED) =================
-const getProgress = () => {
-  let progress = 0;
-
-  if (formData.name.trim()) progress += 10;
-
-  if (/^\S+@\S+\.\S+$/.test(formData.email)) progress += 10;
-
-  if (/^\d{10}$/.test(formData.phone)) progress += 10;
-
-  if (/^\d{10}$/.test(formData.enrollmentNo)) progress += 10;
-
-  if (formData.course) progress += 10;
-
-  if (formData.branch) progress += 10;
-
-  if (formData.year) progress += 10;
-
-  if (
-    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/.test(formData.password)
-  ) {
-    progress += 10;
-  }
-
-  if (
-    formData.password &&
-    formData.confirmPassword &&
-    formData.password === formData.confirmPassword
-  ) {
-    progress += 20;
-  }
-
-  return progress;
-};
-
-const progress = getProgress();
-  // ================= HANDLERS =================
-  const handleChange = (e) => {
-  setFormData({ ...formData, [e.target.name]: e.target.value });
-  setError(""); // 👈 clear error when typing
-};
-
-  const handleFileChange = (e) => {
-    setIdCard(e.target.files[0]);
+  const branchOptions = {
+    BTech: ['CSE', 'ECE', 'ME', 'Civil', 'AI & DS'],
+    BCA: ['General', 'Cloud Computing', 'AI'],
+    BBA: ['Finance', 'Marketing', 'HR'],
+    Law: ['Corporate Law', 'Criminal Law'],
+    Pharmacy: ['Pharmacology', 'Pharmaceutics'],
+    Literature: ['English', 'Hindi', 'Punjabi'],
+    Psychology: ['Clinical', 'Counselling'],
+    Hospitality: ['Hotel Management', 'Tourism']
   };
 
-  const handlePhotoChange = (e) => {
-    setFormData({ ...formData, photo: e.target.files[0] });
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const errMsgStep1 = validateStep1();
-const errMsgStep2 = validateStep2();
-
-if (errMsgStep1 || errMsgStep2) {
-  return setError(errMsgStep1 || errMsgStep2);
-}
-
-    if (progress < 100) {
-      return setError("Please complete all required fields");
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      return setError("Passwords do not match");
-    }
 
     try {
-      const data = new FormData();
+
+      const submitData = new FormData();
 
       Object.keys(formData).forEach((key) => {
-        if (formData[key]) data.append(key, formData[key]);
+        submitData.append(key, formData[key]);
       });
 
-      if (idCard) data.append("idCard", idCard);
+      if (passportPhoto) {
+        submitData.append('passportPhoto', passportPhoto);
+      }
 
-      await API.post('/auth/register', data, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+      if (idProof) {
+        submitData.append('idProof', idProof);
+      }
+
+      await API.post('/auth/register', submitData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
 
-      alert('Registration successful!');
+      alert('Registration Successful');
       navigate('/login');
 
     } catch (err) {
-  console.log("FULL ERROR:", err);  // 👈 ADD THIS
-  console.log("RESPONSE:", err.response); // 👈 ADD THIS
-
-  setError(
-    err.response?.data?.message ||
-    err.message ||
-    "Registration failed"
-  );
-}
+      setError(err.response?.data?.message || 'Registration failed');
+    }
   };
 
   return (
     <div className="register-container">
+
       <div className="register-card">
 
-        <h2>Student Registration</h2>
-
-        {/* ===== Progress Bar ===== */}
-        <div className="progress-wrapper">
-          <div className="progress-bar">
-            <div
-              className="progress-fill"
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
-          <p className="progress-text">{progress}% Completed</p>
+        <div className="register-header">
+          <h2>Student Registration Form</h2>
+          <p>Create your university complaint portal account</p>
         </div>
 
-        {error && <p className="error-text">{error}</p>}
+        {error && <p className="error-msg">{error}</p>}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="register-form-grid">
 
-          {/* ================= STEP 1 ================= */}
-          {step === 1 && (
-            <>
-              <div className="input-group full-width">
-                <input name="name" placeholder="Full Name" onChange={handleChange} value={formData.name} required />
-              </div>
-
-              <div className="input-group full-width">
-                <input name="email" placeholder="Email" onChange={handleChange} value={formData.email} required />
-              </div>
-
-              <div className="input-group full-width">
-                <input name="enrollmentNo" placeholder="Enrollment Number" onChange={handleChange} value={formData.enrollmentNo}required />
-              </div>
-
-              <div className="input-group full-width">
-                <input name="phone" placeholder="Phone Number" onChange={handleChange} value={formData.phone} required />
-              </div>
-
-              <div className="input-group">
-                <select name="course" onChange={handleChange} value={formData.course} required>
-                  <option value="">Course</option>
-                  {Object.keys(courseBranches).map((c, i) => (
-                    <option key={i} value={c}>{c}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="input-group">
-                <select name="branch" onChange={handleChange} value={formData.branch} required>
-                  <option value="">Branch</option>
-                  {courseBranches[formData.course]?.map((b, i) => (
-                    <option key={i} value={b}>{b}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="input-group">
-                <select name="year" onChange={handleChange} value={formData.year} required>
-                  <option value="">Year</option>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                </select>
-              </div>
-
-              <div className="input-group">
-                <select name="hostel" onChange={handleChange} value={formData.hostel} required>
-                  <option value="day">Day Scholar</option>
-                  <option value="hostel">Hostel</option>
-                </select>
-              </div>
-
-              {formData.hostel === "hostel" && (
-                <div className="input-group">
-                  <input name="roomNumber" placeholder="Room Number" onChange={handleChange} value={formData.roomNumber} required />
-                </div>
-              )}
-            </>
-          )}
-
-          {/* ================= STEP 2 ================= */}
-          {step === 2 && (
-            <>
-              <div className="input-group full-width">
-                <label>ID Proof</label>
-                <input type="file" onChange={handleFileChange} />
-              </div>
-
-              <div className="input-group full-width">
-                <label>Passport Photo</label>
-                <input type="file" onChange={handlePhotoChange} />
-              </div>
-
-              <div className="input-group full-width" style={{ position: 'relative' }}>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Password"
-                  onChange={handleChange}
-                  required
-                />
-                <div className="strength-meter">
-  <div
-  className={`strength-bar ${getStrengthClass(getPasswordStrength(formData.password))}`}
-/>
-</div>
-<p className="strength-text">
-  {(() => {
-    const score = getPasswordStrength(formData.password);
-
-    if (score === 0) return "";
-    if (score <= 30) return "Weak";
-    if (score <= 60) return "Medium";
-    if (score <= 80) return "Good";
-    return "Strong";
-  })()}
-</p>
-                <span
-                  onClick={() => setShowPassword(!showPassword)}
-                  style={{
-                    position: 'absolute',
-                    right: '10px',
-                    top: '10px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  👁️
-                </span>
-              </div>
-
-              <div className="input-group full-width">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="confirmPassword"
-                  placeholder="Confirm Password"
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </>
-          )}
-
-          {/* ================= BUTTONS ================= */}
-          <div className="full-width" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
-            {step > 1 && (
-              <button type="button" onClick={() => setStep(step - 1)}>
-                Back
-              </button>
-            )}
-
-            {step < 2 ? (
-              <button
-  type="button"
-  onClick={() => {
-    const err = validateStep1();
-    if (err) {
-      setError(err);
-    } else {
-      setError("");
-      setStep(2);
-    }
-  }}
->
-  Next
-</button>
-            ) : (
-              <button
-                type="submit"
-                className="register-button"
-                disabled={progress < 100}
-              >
-                Register
-              </button>
-            )}
+          {/* PERSONAL INFO */}
+          <div className="section-title full-width">
+            <h3>Personal Information</h3>
           </div>
 
-          <p className="login-link">
-            Already have an account? <Link to="/login">Login</Link>
-          </p>
+          <div className="input-group">
+            <label>Full Name</label>
+            <input
+              type="text"
+              name="fullName"
+              placeholder="Enter full name"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>College Email</label>
+            <input
+              type="email"
+              name="collegeEmail"
+              placeholder="college@example.com"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Phone Number</label>
+            <input
+              type="text"
+              name="phone"
+              placeholder="9876543210"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Date of Birth</label>
+            <input
+              type="date"
+              name="dob"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Gender</label>
+            <select name="gender" onChange={handleChange} required>
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div className="input-group full-width">
+            <label>Home Address</label>
+            <textarea
+              name="address"
+              rows="3"
+              placeholder="Enter home address"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* ACADEMIC INFO */}
+          <div className="section-title full-width">
+            <h3>Academic Information</h3>
+          </div>
+
+          <div className="input-group">
+            <label>Roll Number</label>
+            <input
+              type="text"
+              name="rollNumber"
+              placeholder="22BCS123"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Department</label>
+            <select name="department" onChange={handleChange} required>
+              <option value="">Select Department</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Management">Management</option>
+              <option value="Law">Law</option>
+              <option value="Pharmacy">Pharmacy</option>
+              <option value="Literature">Literature</option>
+              <option value="Psychology">Psychology</option>
+              <option value="Hospitality">Hospitality</option>
+            </select>
+          </div>
+
+          <div className="input-group">
+            <label>Course</label>
+            <select name="course" onChange={handleChange} required>
+              <option value="">Select Course</option>
+              <option value="BTech">BTech</option>
+              <option value="BCA">BCA</option>
+              <option value="BBA">BBA</option>
+              <option value="Law">Law</option>
+              <option value="Pharmacy">Pharmacy</option>
+              <option value="Literature">Literature</option>
+              <option value="Psychology">Psychology</option>
+              <option value="Hospitality">Hospitality</option>
+            </select>
+          </div>
+
+          <div className="input-group">
+            <label>Branch / Specialization</label>
+            <select name="branch" onChange={handleChange} required>
+              <option value="">Select Branch</option>
+
+              {formData.course &&
+                branchOptions[formData.course]?.map((branch, index) => (
+                  <option key={index} value={branch}>
+                    {branch}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          <div className="input-group">
+            <label>Semester / Year</label>
+            <input
+              type="text"
+              name="semester"
+              placeholder="6th Semester"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Mentor Name (Optional)</label>
+            <input
+              type="text"
+              name="mentorName"
+              placeholder="Mentor Name"
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* FAMILY DETAILS */}
+          <div className="section-title full-width">
+            <h3>Family Details</h3>
+          </div>
+
+          <div className="input-group">
+            <label>Father Name</label>
+            <input
+              type="text"
+              name="fatherName"
+              placeholder="Father Name"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Mother Name</label>
+            <input
+              type="text"
+              name="motherName"
+              placeholder="Mother Name"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* HOSTEL INFO */}
+          <div className="section-title full-width">
+            <h3>Accommodation Details</h3>
+          </div>
+
+          <div className="input-group">
+            <label>Accommodation Type</label>
+            <select name="accommodation" onChange={handleChange}>
+              <option value="Day Scholar">Day Scholar</option>
+              <option value="Hosteller">Hosteller</option>
+            </select>
+          </div>
+
+          {formData.accommodation === 'Hosteller' && (
+            <>
+              <div className="input-group">
+                <label>Hostel Name</label>
+                <input
+                  type="text"
+                  name="hostelName"
+                  placeholder="Hostel Name"
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="input-group">
+                <label>Room Number</label>
+                <input
+                  type="text"
+                  name="roomNumber"
+                  placeholder="Room Number"
+                  onChange={handleChange}
+                />
+              </div>
+            </>
+          )}
+
+          {/* UPLOADS */}
+          <div className="section-title full-width">
+            <h3>Verification Documents</h3>
+          </div>
+
+          <div className="input-group">
+            <label>Passport Size Photo</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setPassportPhoto(e.target.files[0])}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>ID Proof Upload</label>
+            <input
+              type="file"
+              accept="image/*,.pdf"
+              onChange={(e) => setIdProof(e.target.files[0])}
+              required
+            />
+          </div>
+
+          <div className="input-group full-width">
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Create Password"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit" className="register-button full-width">
+            Create Account
+          </button>
 
         </form>
+
+        <p className="login-link">
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
+
       </div>
+
     </div>
   );
 };
 
 export default Register;
+
+

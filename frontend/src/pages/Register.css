@@ -1,21 +1,11 @@
-/* =========================
-   🌍 PAGE BACKGROUND (LIGHT RED THEME)
-========================= */
-body {
-  margin: 0;
-  font-family: "Manrope", sans-serif;
-  background: linear-gradient(135deg, #fff5f5, #ffe4e6, #ffffff);
-}
 
-/* =========================
-   📦 CONTAINER
-========================= */
 .register-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 50px 20px;
-  min-height: 100vh;
+  flex-grow: 1; 
+  min-height: calc(80vh - 30px);
+  background: transparent;
 }
 
 /* =========================
@@ -23,62 +13,25 @@ body {
 ========================= */
 .register-card {
   width: 100%;
-  max-width: 700px;
-  background: rgba(255, 255, 255, 0.75);
+  height:auto;
+  max-width: 350px;
+ background: rgba(25, 104, 91, 0.404);
   backdrop-filter: blur(15px);
-
-  border: 1px solid rgba(255, 0, 0, 0.1);
-  border-radius: 18px;
-
-  padding: 30px;
-  box-shadow: 0 20px 40px rgba(255, 0, 0, 0.1);
-
-  animation: fadeUp 0.6s ease;
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 30px 50px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* =========================
-   ✨ TITLE
-========================= */
 .register-card h2 {
+  font-family: "Manrope", sans-serif;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 25px;
   text-align: center;
-  color: #b91c1c;
-  margin-bottom: 20px;
-}
-
-/* =========================
-   📊 PROGRESS BAR
-========================= */
-.progress-wrapper {
-  margin-bottom: 20px;
-}
-
-.progress-bar {
-  height: 8px;
-  background: #f3f4f6;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #ef4444, #b91c1c);
-  transition: width 0.4s ease;
-}
-
-.progress-text {
-  text-align: right;
-  font-size: 12px;
-  margin-top: 5px;
-  color: #6b7280;
-}
-
-/* =========================
-   📊 FORM GRID
-========================= */
-form {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+  font-size: 28px;
+  letter-spacing: -0.5px;
 }
 
 .full-width {
@@ -91,86 +44,59 @@ form {
 .input-group {
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 
-.input-group input,
-.input-group select {
-  padding: 11px 12px;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
-  font-size: 14px;
-  color: #111;   /* dark text */
-  background: #fff;
-
-  transition: all 0.25s ease;
-}
-.input-group input::placeholder {
+.input-group label {
+  font-size: 13px;
   color: #9ca3af;
+  margin-left: 4px;
+  font-weight: 500;
 }
 
-input[type="file"] {
-  color: #111;
-}
-/* Focus */
-.input-group input:focus,
-.input-group select:focus {
-  outline: none;
-  border-color: #ef4444;
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
-}
-
-/* Dropdown Fix */
-.input-group select option {
-  background: #ffffff;
-  color: #000;
-}
-
-/* =========================
-   🚀 BUTTONS
-========================= */
-button {
-  padding: 10px 16px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
+.input-group input, 
+.input-group select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: white;
+  font-family: "Manrope", sans-serif;
+  font-size: 15px;
   transition: all 0.3s ease;
 }
 
-/* Next + Back */
-button[type="button"] {
-  background: #ef4444;
+/* Specific styling for the dropdown arrow in dark mode */
+.input-group select option {
+  background: #1e272c; 
   color: white;
 }
 
-button[type="button"]:hover {
-  background: #dc2626;
-  transform: translateY(-1px);
+.input-group input:focus, 
+.input-group select:focus {
+  outline: none;
+  border-color: #0ed99e;
+  background: rgba(255, 255, 255, 0.08);
 }
 
-/* Register Button */
 .register-button {
-  background: linear-gradient(135deg, #ef4444, #b91c1c);
-  color: white;
-  width: 100%;
+  background: #0ed99e;
+  color: #000;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(14, 217, 158, 0.2);
 }
 
 .register-button:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
-}
-button {
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
-}
-
-button:active {
-  transform: scale(0.96);
-}
-/* Disabled */
-.register-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-  box-shadow: none;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(14, 217, 158, 0.4);
+  filter: brightness(1.1);
 }
 
 /* =========================
@@ -179,73 +105,18 @@ button:active {
 .login-link {
   grid-column: span 2;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 20px;
   font-size: 14px;
+  color: #9ca3af;
 }
 
 .login-link a {
-  color: #ef4444;
+  color: #0ed99e;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
+  margin-left: 5px;
 }
 
-/* =========================
-   📱 MOBILE RESPONSIVE
-========================= */
-@media (max-width: 600px) {
-  .register-card {
-    padding: 20px;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-
-  button {
-    width: 100%;
-  }
-}
-
-/* =========================
-   🎞 ANIMATION
-========================= */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.strength-meter {
-  height: 6px;
-  background: #eee;
-  border-radius: 10px;
-  margin-top: 5px;
-}
-
-.strength-bar {
-  height: 6px;
-  border-radius: 10px;
-  transition: width 0.4s ease;
-}
-
-.strength-1 { width: 25%; background: red; }
-.strength-2 { width: 50%; background: orange; }
-.strength-3 { width: 75%; background: gold; }
-.strength-4 { width: 100%; background: green; }
-
-.strength-text {
-  font-size: 12px;
-  margin-top: 3px;
-}
-.error-text {
-  color: #dc2626;
-  background: #fee2e2;
-  padding: 8px;
-  border-radius: 8px;
-  text-align: center;
+.login-link a:hover {
+  text-decoration: underline;
 }
