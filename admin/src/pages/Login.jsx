@@ -40,7 +40,7 @@ const AdminLogin = () => {
     try {
 
       const response = await API.post(
-        '/auth/admin-login',
+        '/auth/login/admin',
         formData
       );
 

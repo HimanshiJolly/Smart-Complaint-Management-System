@@ -1,125 +1,161 @@
 const express = require('express');
-
 const bcrypt = require('bcryptjs');
-
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const User = require('../models/User');
 
 const router = express.Router();
 
 
-// ================= REGISTER =================
+// ================= UPLOADS =================
 
-router.post('/register', async (req, res) => {
+const uploadDir = path.join(__dirname, '../uploads');
 
-  try {
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
 
-    const {
+const storage = multer.diskStorage({
 
-      fullName,
-      collegeEmail,
-      rollNumber,
-      phone,
-      semester,
-      department,
-      address,
-      fatherName,
-      motherName,
-      mentorName,
-      dob,
-      gender,
-      password,
-      role
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
 
-    } = req.body;
-
-    // CHECK EXISTING USER
-
-    const existingUser = await User.findOne({
-
-      $or: [
-        { collegeEmail },
-        { rollNumber }
-      ]
-
-    });
-
-    if (existingUser) {
-
-      return res.status(400).json({
-        message: 'User already exists'
-      });
-
-    }
-
-    // HASH PASSWORD
-
-    const salt = await bcrypt.genSalt(10);
-
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // CREATE USER
-
-    const newUser = new User({
-
-      fullName,
-      collegeEmail,
-      rollNumber,
-      phone,
-      semester,
-      department,
-      address,
-      fatherName,
-      motherName,
-      mentorName,
-      dob,
-      gender,
-
-      password: hashedPassword,
-
-      role: role || 'user'
-
-    });
-
-    await newUser.save();
-
-    res.status(201).json({
-      message: 'User registered successfully'
-    });
-
-  } catch (err) {
-
-    res.status(500).json({
-      error: err.message
-    });
-
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
   }
 
 });
 
+const upload = multer({ storage });
 
-// ================= LOGIN =================
 
-router.post('/login', async (req, res) => {
+// ===================================================
+// USER REGISTER
+// ===================================================
+
+router.post(
+  '/register/user',
+
+  upload.fields([
+    { name: 'idProofPhoto', maxCount: 1 },
+    { name: 'passportPhoto', maxCount: 1 }
+  ]),
+
+  async (req, res) => {
+
+    try {
+
+      const {
+        fullName,
+        collegeEmail,
+        rollNumber,
+        phone,
+        semester,
+        department,
+        course,
+        branch,
+        hostelStatus,
+        roomNumber,
+        address,
+        fatherName,
+        motherName,
+        mentorName,
+        dob,
+        gender,
+        password
+      } = req.body;
+
+      const existingUser = await User.findOne({
+        $or: [
+          { collegeEmail },
+          { rollNumber }
+        ]
+      });
+
+      if (existingUser) {
+        return res.status(400).json({
+          message: 'User already exists'
+        });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const newUser = new User({
+
+        role: 'user',
+
+        fullName,
+        collegeEmail,
+        rollNumber,
+        phone,
+        semester,
+        department,
+        course,
+        branch,
+        hostelStatus,
+        roomNumber,
+        address,
+        fatherName,
+        motherName,
+        mentorName,
+        dob,
+        gender,
+
+        idProofPhoto: req.files?.idProofPhoto
+          ? `/uploads/${req.files.idProofPhoto[0].filename}`
+          : null,
+
+        passportPhoto: req.files?.passportPhoto
+          ? `/uploads/${req.files.passportPhoto[0].filename}`
+          : null,
+
+        password: hashedPassword
+
+      });
+
+      await newUser.save();
+
+      res.status(201).json({
+        message: 'User registered successfully'
+      });
+
+    } catch (err) {
+
+  console.log(err);
+
+  res.status(500).json({
+    error: err.message
+  });
+
+}
+  }
+);
+
+
+// ===================================================
+// USER LOGIN
+// ===================================================
+
+router.post('/login/user', async (req, res) => {
 
   try {
 
     const { rollNumber, password } = req.body;
 
-    // FIND USER
-
-    const user = await User.findOne({ rollNumber });
+    const user = await User.findOne({
+      rollNumber,
+      role: 'user'
+    });
 
     if (!user) {
-
       return res.status(404).json({
         message: 'User not found'
       });
-
     }
-
-    // CHECK PASSWORD
 
     const isMatch = await bcrypt.compare(
       password,
@@ -127,58 +163,171 @@ router.post('/login', async (req, res) => {
     );
 
     if (!isMatch) {
-
       return res.status(400).json({
         message: 'Invalid credentials'
       });
-
     }
 
-    // CREATE TOKEN
-
     const token = jwt.sign(
-
       {
         id: user._id,
         role: user.role
       },
-
       process.env.JWT_SECRET,
-
       {
         expiresIn: '1d'
       }
-
     );
-
-    // RESPONSE
 
     res.json({
 
       token,
 
       user: {
-
         id: user._id,
-
         fullName: user.fullName,
-
-        rollNumber: user.rollNumber,
-
         role: user.role
-
       }
 
     });
 
   } catch (err) {
 
+    console.log(err);
+
     res.status(500).json({
       error: err.message
     });
+  }
+});
+
+
+// ===================================================
+// ADMIN REGISTER
+// ===================================================
+
+router.post('/register/admin', async (req, res) => {
+
+  try {
+
+    const {
+      adminName,
+      adminEmail,
+      adminPhone,
+      adminId,
+      password
+    } = req.body;
+
+    const existingAdmin = await User.findOne({
+      $or: [
+        { adminEmail },
+        { adminId }
+      ]
+    });
+
+    if (existingAdmin) {
+      return res.status(400).json({
+        message: 'Admin already exists'
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const admin = new User({
+
+      role: 'admin',
+
+      adminName,
+      adminEmail,
+      adminPhone,
+      adminId,
+
+      password: hashedPassword
+    });
+
+    await admin.save();
+
+    res.status(201).json({
+      message: 'Admin registered successfully'
+    });
+
+  } catch (err) {
+
+      console.log(err);
+
+      res.status(500).json({
+        error: err.message
+      });
+
+    }
 
   }
+);
 
+
+// ===================================================
+// ADMIN LOGIN
+// ===================================================
+
+router.post('/login/admin', async (req, res) => {
+
+  try {
+
+    const { adminId, password } = req.body;
+
+    const admin = await User.findOne({
+      adminId,
+      role: 'admin'
+    });
+
+    if (!admin) {
+      return res.status(404).json({
+        message: 'Admin not found'
+      });
+    }
+
+    const isMatch = await bcrypt.compare(
+      password,
+      admin.password
+    );
+
+    if (!isMatch) {
+      return res.status(400).json({
+        message: 'Invalid credentials'
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        id: admin._id,
+        role: admin.role
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '1d'
+      }
+    );
+
+    res.json({
+
+      token,
+
+      user: {
+        id: admin._id,
+        adminName: admin.adminName,
+        role: admin.role
+      }
+
+    });
+
+  } catch (err) {
+
+    console.log(err);
+
+    res.status(500).json({
+      error: err.message
+    });
+  }
 });
 
 module.exports = router;

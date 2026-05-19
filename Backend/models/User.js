@@ -2,21 +2,20 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
 
-  fullName: {
-    type: String,
-    required: true
-  },
+  // ================= USER =================
+
+  fullName: String,
 
   collegeEmail: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
+    sparse: true
   },
 
   rollNumber: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
+    sparse: true
   },
 
   phone: String,
@@ -24,6 +23,14 @@ const userSchema = new mongoose.Schema({
   semester: String,
 
   department: String,
+
+  course: String,
+
+  branch: String,
+
+  hostelStatus: String,
+
+  roomNumber: String,
 
   address: String,
 
@@ -37,6 +44,32 @@ const userSchema = new mongoose.Schema({
 
   gender: String,
 
+  idProofPhoto: String,
+
+  passportPhoto: String,
+
+
+  // ================= ADMIN =================
+
+  adminName: String,
+
+  adminEmail: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
+
+  adminPhone: String,
+
+  adminId: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
+
+
+  // ================= COMMON =================
+
   password: {
     type: String,
     required: true
@@ -44,7 +77,8 @@ const userSchema = new mongoose.Schema({
 
   role: {
     type: String,
-    default: "user"
+    enum: ['user', 'admin'],
+    default: 'user'
   }
 
 }, { timestamps: true });

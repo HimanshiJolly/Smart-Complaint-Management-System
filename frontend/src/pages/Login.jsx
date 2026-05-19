@@ -30,7 +30,7 @@ const Login = () => {
 
     try {
 
-      const response = await API.post('/auth/login', formData);
+      const response = await API.post('/auth/login/user', formData);
 
       login(response.data.user, response.data.token);
 

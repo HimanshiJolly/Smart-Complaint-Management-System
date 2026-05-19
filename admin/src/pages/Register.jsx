@@ -40,7 +40,7 @@ const AdminRegister = () => {
     try {
 
       await API.post(
-        '/auth/admin-register',
+        '/auth/register/admin',
         formData
       );
 

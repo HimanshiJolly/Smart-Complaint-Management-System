@@ -71,7 +71,7 @@ const Register = () => {
         submitData.append('idProof', idProof);
       }
 
-      await API.post('/auth/register', submitData, {
+      await API.post('/auth/register/user', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
