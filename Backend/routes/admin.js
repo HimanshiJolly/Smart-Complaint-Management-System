@@ -140,4 +140,75 @@ router.delete(
   }
 );
 
+// ==========================================
+// ADMIN ANALYTICS
+// GET /api/admin/analytics
+// ==========================================
+router.get(
+  '/analytics',
+  protect,
+  superAdminOnly,
+  async (req, res) => {
+    try {
+      const [
+        totalStudents,
+        totalComplaints,
+        pendingComplaints,
+        resolvedComplaints,
+        categoryAgg
+      ] = await Promise.all([
+        // total registered students
+        User.countDocuments({ role: 'user' }),
+
+        // all complaints
+        Complaint.countDocuments({}),
+
+        // pending complaints
+        Complaint.countDocuments({ status: 'Pending' }),
+
+        // resolved complaints
+        Complaint.countDocuments({ status: 'Resolved' }),
+
+        // category breakdown
+        Complaint.aggregate([
+          {
+            $group: {
+              _id: '$category',
+              count: { $sum: 1 }
+            }
+          }
+        ])
+      ]);
+
+      const categories = [
+        'Cleanliness',
+        'Management',
+        'Infrastructure',
+        'Food/Hostel',
+        'Other'
+      ];
+
+      const categoryStats = categories.reduce((acc, cat) => {
+        const found = (categoryAgg || []).find(
+          (x) => x._id === cat
+        );
+        acc[cat] = found ? found.count : 0;
+        return acc;
+      }, {});
+
+      res.json({
+        totalStudents,
+        totalComplaints,
+        pendingComplaints,
+        resolvedComplaints,
+        categoryStats
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: error.message
+      });
+    }
+  }
+);
+
 module.exports = router;

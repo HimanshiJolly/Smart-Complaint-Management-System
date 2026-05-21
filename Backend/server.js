@@ -12,6 +12,7 @@ const User = require('./models/User');
 const app = express();
 
 const complaintRoutes = require('./routes/complaints');
+const userRoutes = require("./routes/users");
 
 
 // ================= MIDDLEWARE =================
@@ -34,8 +35,12 @@ app.use('/api/complaints', complaintRoutes);
 
 app.use('/api/admin', require('./routes/admin'));
 
+app.use("/api/users", userRoutes);
+app.use('/uploads', express.static('uploads'));
+
 
 // ================= SUPER ADMIN CREATOR =================
+
 
 const createSuperAdmin = async () => {
 

@@ -203,16 +203,17 @@ router.post('/login/admin', async (req, res) => {
 
       user: {
 
-        id: admin._id,
+  id: admin._id,
 
-        name:
-          admin.adminName || 'Admin',
+  fullName:
+    admin.adminName,
 
-        role: admin.role,
+  role: admin.role,
 
-        adminId: admin.adminId
+  passportPhoto:
+    admin.passportPhoto || null
 
-      }
+}
 
     });
 
@@ -270,15 +271,22 @@ router.post('/login/user', async (req, res) => {
 
     res.json({
 
-      token,
+  token,
 
-      user: {
-        id: user._id,
-        fullName: user.fullName,
-        role: user.role
-      }
+  user: {
 
-    });
+    id: user._id,
+
+    fullName: user.fullName,
+
+    role: user.role,
+
+    passportPhoto:
+      user.passportPhoto
+
+  }
+
+});
 
   } catch (err) {
 

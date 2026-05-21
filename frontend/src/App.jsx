@@ -4,6 +4,8 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Profile from "./pages/Profile";
+
 import Footer from './components/Footer';
 import './main.css';
 
@@ -18,7 +20,9 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/profile" element={<Profile />}/>
             </Routes>
+
           </main>
           <Footer/>
         </div>

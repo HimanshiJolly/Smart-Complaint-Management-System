@@ -6,15 +6,9 @@
 
 body {
   font-family: "Manrope", sans-serif;
-  background: linear-gradient(
-    135deg,
-    #fef2f2,
-    #ffffff
-  );
+  background: linear-gradient(135deg, #fef2f2, #ffffff);
   color: #dc2626;
 }
-
-/* LAYOUT */
 
 .admin-layout {
   display: flex;
@@ -22,7 +16,6 @@ body {
 }
 
 /* SIDEBAR */
-
 .sidebar {
   width: 270px;
   background: #dc2626;
@@ -60,14 +53,15 @@ body {
   border-radius: 14px;
   cursor: pointer;
   font-size: 15px;
-  transition: 0.3s;
+  transition: 0.25s ease;
+  font-weight: 600;
 }
 
 .sidebar-menu button:hover,
 .sidebar-menu .active {
   background: #fee2e2;
   color: #dc2626;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .logout-btn {
@@ -78,43 +72,75 @@ body {
   color: white;
   font-weight: 700;
   cursor: pointer;
+  transition: 0.25s ease;
+  margin-top: 16px;
+}
+
+.logout-btn:hover {
+  filter: brightness(0.98);
+  transform: translateY(-1px);
 }
 
 /* MAIN CONTENT */
-
 .main-content {
   flex: 1;
   padding: 35px;
 }
 
 /* TOPBAR */
-
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 35px;
+  margin-bottom: 22px;
+  gap: 18px;
 }
 
-.topbar h1 {
+.topbar > div > h1 {
   font-size: 34px;
-  font-weight: 800;
+  font-weight: 900;
   color: #dc2626;
 }
 
 .topbar p {
   color: #6b7280;
   margin-top: 6px;
+  font-weight: 500;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.home-btn {
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  color: #dc2626;
+  padding: 12px 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 800;
+  transition: 0.25s ease;
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.08);
+}
+
+.home-btn:hover {
+  background: rgba(220, 38, 38, 0.14);
+  transform: translateY(-1px);
 }
 
 .admin-profile {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: rgba(255,255,255,0.6);
+  background: rgba(255, 255, 255, 0.7);
   padding: 10px 18px;
   border-radius: 18px;
-  border: 1px solid rgba(220,38,38,0.1);
+  border: 1px solid rgba(220, 38, 38, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 25px rgba(220, 38, 38, 0.07);
 }
 
 .profile-circle {
@@ -126,32 +152,44 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 800;
+  font-weight: 900;
+  letter-spacing: 0.5px;
 }
 
-/* STATS */
+.admin-profile h4 {
+  font-size: 14px;
+  color: #dc2626;
+}
 
+.admin-profile p {
+  margin-top: 2px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* STATS CARDS */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 22px;
-  margin-bottom: 35px;
+  gap: 18px;
+  margin-bottom: 26px;
 }
 
 .stat-card {
-  background: rgba(255,255,255,0.65);
+  background: rgba(255, 255, 255, 0.75);
   border-radius: 24px;
-  padding: 25px;
+  padding: 22px 22px;
   display: flex;
   align-items: center;
-  gap: 18px;
-  border: 1px solid rgba(220,38,38,0.08);
+  gap: 16px;
+  border: 1px solid rgba(220, 38, 38, 0.1);
   backdrop-filter: blur(10px);
+  box-shadow: 0 14px 32px rgba(220, 38, 38, 0.08);
 }
 
 .stat-icon {
-  width: 60px;
-  height: 60px;
+  width: 58px;
+  height: 58px;
   border-radius: 18px;
   background: #fee2e2;
   display: flex;
@@ -168,26 +206,29 @@ body {
 .stat-card p {
   color: #6b7280;
   margin-top: 5px;
+  font-weight: 600;
+  font-size: 13px;
 }
 
-/* TABLE */
-
+/* TABLE / SECTIONS */
 .table-section {
-  background: rgba(255,255,255,0.65);
+  background: rgba(255, 255, 255, 0.78);
   border-radius: 24px;
   padding: 30px;
-  border: 1px solid rgba(220,38,38,0.08);
+  border: 1px solid rgba(220, 38, 38, 0.08);
+  box-shadow: 0 14px 32px rgba(220, 38, 38, 0.06);
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 18px;
 }
 
 .section-header h2 {
   color: #dc2626;
+  font-size: 22px;
 }
 
 .view-btn {
@@ -197,6 +238,13 @@ body {
   padding: 10px 18px;
   border-radius: 12px;
   cursor: pointer;
+  font-weight: 900;
+  transition: 0.25s ease;
+}
+
+.view-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.98);
 }
 
 .table-wrapper {
@@ -220,16 +268,17 @@ td {
   padding: 18px 16px;
   border-bottom: 1px solid #fecaca;
   color: #6b7280;
+  font-weight: 600;
 }
 
 /* STATUS */
-
 .status,
 .priority {
   padding: 8px 14px;
   border-radius: 30px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
+  display: inline-block;
 }
 
 .pending {
@@ -269,19 +318,80 @@ td {
   padding: 10px 16px;
   border-radius: 10px;
   cursor: pointer;
+  font-weight: 900;
 }
 
+/* DASHBOARD ANALYTICS */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.top-category-card {
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 24px;
+  padding: 22px;
+  border: 1px solid rgba(220, 38, 38, 0.1);
+  box-shadow: 0 14px 32px rgba(220, 38, 38, 0.06);
+}
+
+.top-category-header {
+  color: #6b7280;
+  font-weight: 800;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.top-category-value {
+  font-size: 28px;
+  font-weight: 1000;
+  color: #dc2626;
+}
+
+.top-category-sub {
+  margin-top: 6px;
+  color: #6b7280;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 18px;
+}
+
+.chart-card {
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 24px;
+  padding: 18px;
+  border: 1px solid rgba(220, 38, 38, 0.1);
+  box-shadow: 0 14px 32px rgba(220, 38, 38, 0.06);
+}
+
+.chart-title {
+  color: #dc2626;
+  font-weight: 1000;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.chart-body {
+  width: 100%;
+}
 
 /* RESPONSIVE */
-
 @media (max-width: 1100px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 850px) {
-
   .admin-layout {
     flex-direction: column;
   }
@@ -293,16 +403,15 @@ td {
   .topbar {
     flex-direction: column;
     align-items: flex-start;
-    gap: 20px;
   }
 
-  .stats-grid {
-    grid-template-columns: 1fr;
+  .topbar-right {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 
 @media (max-width: 600px) {
-
   .main-content {
     padding: 20px;
   }
@@ -311,11 +420,8 @@ td {
     padding: 20px;
   }
 
-  .sidebar-top h2 {
-    font-size: 28px;
-  }
-
-  .topbar h1 {
-    font-size: 28px;
+  .stats-grid {
+    grid-template-columns: 1fr;
   }
 }
+
