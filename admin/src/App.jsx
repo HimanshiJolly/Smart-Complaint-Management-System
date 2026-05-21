@@ -148,7 +148,7 @@ function App() {
 
   const handleHome = () => {
     // Redirect to frontend landing page (Home.jsx at /)
-    window.location.href = "http://localhost:5173/";
+    window.location.href = "http://localhost:5174/";
   };
 
 

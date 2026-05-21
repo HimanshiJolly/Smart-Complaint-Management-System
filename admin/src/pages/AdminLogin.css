@@ -78,7 +78,89 @@
   flex-direction: column;
   gap: 22px;
 }
+.admin-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
 
+.admin-logo h2 {
+  margin: 0;
+  color: #dc2626;
+}
+
+.admin-logo span {
+  font-size: 12px;
+  color: gray;
+}
+
+.home-btn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.logo-image {
+
+  width: 60px;
+  height: 60px;
+
+  object-fit: contain;
+
+  border-radius: 10px;
+
+  padding: 2px;
+
+  background: transparent;
+}
+.logo-link {
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  text-decoration: none;
+}
+
+.logo-icon {
+
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #dbeafe;
+  border-radius: 16px;
+  font-size: 1.4rem;
+}
+
+.nav-logo h2 {
+
+  color: var(--primary-navy);
+
+  font-size: 1.6rem;
+
+  line-height: 1;
+}
+
+.nav-logo p {
+
+  color: var(--text-muted);
+
+  font-size: 0.12rem;
+
+  margin-top: 4px;
+}
+
+.home-btn:hover {
+  background: #b91c1c;
+}
 /* INPUT GROUP */
 
 .input-group {

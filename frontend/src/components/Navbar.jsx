@@ -88,70 +88,48 @@ const Navbar = () => {
       {/* CENTER */}
       {/* ========================= */}
 
-      <div className="nav-center">
+     <div className="nav-center">
 
-        <Link
-          to="/"
-          className="nav-menu-link"
-        >
-          Home
-        </Link>
+  {/* HOME ALWAYS VISIBLE */}
+  <Link to="/" className="nav-menu-link">
+    Home
+  </Link>
 
-        <button
-          className="nav-menu-link nav-btn-link"
-          onClick={() => {
+  {/* ONLY FOR GUEST USERS */}
+  {!user && (
+    <>
+      <button
+        className="nav-menu-link nav-btn-link"
+        onClick={() => {
+          const section = document.getElementById("about-section");
+          section?.scrollIntoView({ behavior: "smooth" });
+        }}
+      >
+        About Us
+      </button>
 
-            const section =
-              document.getElementById(
-                "about-section"
-              );
+      <button
+        className="nav-menu-link nav-btn-link"
+        onClick={() => {
+          const section = document.getElementById("features-section");
+          section?.scrollIntoView({ behavior: "smooth" });
+        }}
+      >
+        Features
+      </button>
 
-            if (section) {
+      <button
+        className="admin-panel-btn"
+        onClick={() =>
+          (window.location.href = "http://localhost:5173/login")
+        }
+      >
+        Admin Panel
+      </button>
+    </>
+  )}
 
-              section.scrollIntoView({
-                behavior: "smooth",
-              });
-
-            }
-
-          }}
-        >
-          About Us
-        </button>
-
-        <button
-          className="nav-menu-link nav-btn-link"
-          onClick={() => {
-
-            const section =
-              document.getElementById(
-                "features-section"
-              );
-
-            if (section) {
-
-              section.scrollIntoView({
-                behavior: "smooth",
-              });
-
-            }
-
-          }}
-        >
-          Features
-        </button>
-
-        <button
-          className="admin-panel-btn"
-          onClick={() =>
-            window.location.href =
-              "http://localhost:5174/login"
-          }
-        >
-          Admin Panel
-        </button>
-
-      </div>
+</div>
 
       {/* ========================= */}
       {/* RIGHT */}
@@ -172,25 +150,7 @@ const Navbar = () => {
               }
             >
 
-              {/* PROFILE IMAGE */}
-
-              {user.passportPhoto ? (
-
-                <img
-                  src={`http://localhost:5000${user.passportPhoto}`}
-                  alt="Profile"
-                  className="profile-navbar-img"
-                />
-
-              ) : (
-
-                <img
-  src={user?.passportPhoto}
-  alt="profile"
-  className="navbar-profile-img"
-/>
-
-              )}
+             
 
               {/* USER INFO */}
 

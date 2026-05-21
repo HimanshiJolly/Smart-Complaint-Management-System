@@ -63,7 +63,53 @@ const AdminLogin = () => {
   };
 
   return (
+  <>
+    {/* NAVBAR */}
+    <nav className="admin-navbar">
 
+      <div className="admin-logo">
+         <Link
+          to="/"
+          className="logo-link"
+        >
+
+          <div className="logo-wrapper">
+
+            <img
+              src="/favicon.png"
+              alt="Resolvio Logo"
+              className="logo-image"
+            />
+
+          </div>
+
+          <div className="logo-text">
+
+            <h2>
+              Resolvio
+            </h2>
+
+            <p>
+              Smart Complaint Management
+            </p>
+
+          </div>
+
+        </Link>
+      </div>
+
+      <button
+        className="home-btn"
+        onClick={() =>
+          (window.location.href = "http://localhost:5174/")
+        }
+      >
+        ⬅ Home
+      </button>
+
+    </nav>
+
+    {/* LOGIN CARD */}
     <div className="login-container">
 
       <div className="login-card">
@@ -86,9 +132,7 @@ const AdminLogin = () => {
         >
 
           <div className="input-group">
-
             <label>Admin ID</label>
-
             <input
               type="text"
               name="adminId"
@@ -96,13 +140,10 @@ const AdminLogin = () => {
               onChange={handleChange}
               required
             />
-
           </div>
 
           <div className="input-group">
-
             <label>Password</label>
-
             <input
               type="password"
               name="password"
@@ -110,7 +151,6 @@ const AdminLogin = () => {
               onChange={handleChange}
               required
             />
-
           </div>
 
           <button
@@ -122,20 +162,11 @@ const AdminLogin = () => {
 
         </form>
 
-        <p className="register-link">
-
-          Need admin access?
-
-          <Link to="#">
-            Contact Super Admin
-          </Link>
-
-        </p>
-
       </div>
 
     </div>
-  );
+  </>
+);
 };
 
 export default AdminLogin;

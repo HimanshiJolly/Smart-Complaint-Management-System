@@ -391,7 +391,7 @@ const Home = () => {
 
       {/* USER FORM */}
       {user.role === "user" && (
-        <section className="submission-form card">
+        <section id="complaint-section" className="submission-form card">
           <h3>Submit a New Complaint</h3>
 
           <form onSubmit={handleComplaintSubmit} className="grid-form">

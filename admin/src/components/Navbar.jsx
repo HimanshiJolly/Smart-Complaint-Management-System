@@ -4,9 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import "./Navbar.css";
 
 const Navbar = () => {
-
   const { user, logout } = useContext(AuthContext);
-
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -14,15 +12,16 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  return (
+  const goHome = () => {
+    navigate("/");
+  };
 
+  return (
     <nav className="navbar">
 
-      {/* LEFT */}
+      {/* LEFT LOGO */}
       <div className="nav-logo">
-
         <Link to="/" className="logo-link">
-
           <img
             src="/favicon.png"
             alt="Resolvio Logo"
@@ -33,25 +32,27 @@ const Navbar = () => {
             <h2>Resolvio</h2>
             <p>Smart Complaint Management</p>
           </div>
-
         </Link>
-
       </div>
 
-      {/* RIGHT */}
+      {/* RIGHT SIDE */}
       <div className="nav-links">
 
         {user ? (
           <>
+            {/* HOME BUTTON (IMPORTANT FIX FOR ADMIN ALSO) */}
+            <button onClick={goHome} className="home-btn">
+              Home
+            </button>
+
+            {/* USER INFO */}
             <div className="user-badge">
-              👋 Hi, {user.name}
+              👋 {user.fullName || user.name}
               <span>{user.role}</span>
             </div>
 
-            <button
-              onClick={handleLogout}
-              className="logout-btn"
-            >
+            {/* LOGOUT */}
+            <button onClick={handleLogout} className="logout-btn">
               Logout
             </button>
           </>

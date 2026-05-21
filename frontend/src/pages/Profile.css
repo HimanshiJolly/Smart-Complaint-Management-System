@@ -27,7 +27,33 @@
   object-fit: cover;
   border: 5px solid #dc2626;
 }
+.image-wrapper {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 15px auto;
+  position: relative;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-image {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid #dc2626;
+  display: block;
+}
+
+/* optional: better alignment fix */
+.profile-left {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .role-badge {
   display: inline-block;
   margin-top: 10px;
