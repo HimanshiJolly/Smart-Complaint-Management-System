@@ -2,138 +2,225 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+
 const Complaint = require('../models/Complaint');
+const User = require('../models/User');
+
 const { protect, adminOnly } = require('../middleware/auth');
 const ComplaintPriorityQueue = require('../utils/PriorityQueue');
+
 const router = express.Router();
 
+// ==========================================
+// CREATE UPLOADS FOLDER IF NOT EXISTS
+// ==========================================
 
-// --- AUTO-CREATE UPLOADS DIRECTORY ---
 const uploadDir = path.join(__dirname, '../uploads');
+
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 
-// --- MULTER SETUP FOR IMAGE UPLOADS ---
+// ==========================================
+// MULTER SETUP
+// ==========================================
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // Save files in the uploads folder
+    cb(null, 'uploads/');
   },
+
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // Give it a unique name
+    cb(null, Date.now() + path.extname(file.originalname));
   }
 });
-const upload = multer({ storage: storage });
 
+const upload = multer({ storage });
 
 // ==========================================
-//                 ROUTES
+// CREATE COMPLAINT
 // ==========================================
 
-// 1. CREATE A COMPLAINT (WITH IMAGE & AUTO-PRIORITY)
 router.post('/', protect, upload.single('image'), async (req, res) => {
   try {
     const { title, description, category } = req.body;
 
-    // AUTO-PRIORITY LOGIC based on category
-    let assignedPriority = 1; // Default to Low Priority
-    if (category === 'Infrastructure' || category === 'Food/Hostel') {
-      assignedPriority = 3; // High Priority
-    } else if (category === 'Cleanliness' || category === 'Management') {
-      assignedPriority = 2; // Medium Priority
+    let assignedPriority = 1;
+
+    if (
+      category === 'Infrastructure' ||
+      category === 'Food/Hostel'
+    ) {
+      assignedPriority = 3;
     }
 
-    // Get image path if a file was uploaded successfully
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+    else if (
+      category === 'Cleanliness' ||
+      category === 'Management'
+    ) {
+      assignedPriority = 2;
+    }
+
+    const imageUrl = req.file
+      ? `/uploads/${req.file.filename}`
+      : null;
 
     const newComplaint = new Complaint({
-      userId: req.user.id, // Extracted from protect middleware
+      userId: req.user.id,
       title,
       description,
       category,
-      priority: assignedPriority, // Automatically assigned by backend
+      priority: assignedPriority,
       imageUrl
     });
 
     const savedComplaint = await newComplaint.save();
+
     res.status(201).json(savedComplaint);
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message
+    });
   }
 });
 
+// ==========================================
+// GET ALL COMPLAINTS
+// ==========================================
 
-// 2. GET ALL COMPLAINTS (User sees their own, Admin sees all)
 router.get('/', protect, async (req, res) => {
+
   try {
+
     let complaints;
 
-    if (req.user.role === 'admin') {
-      complaints = await Complaint.find().sort({ createdAt: -1 });
-    } else {
+    // ADMIN + SUPERADMIN
+    if (
+      req.user.role === 'admin' ||
+      req.user.role === 'superadmin'
+    ) {
+
+      complaints = await Complaint.find()
+        .populate(
+          'userId',
+          'fullName department'
+        )
+        .sort({ createdAt: -1 });
+
+    }
+
+    // NORMAL USER
+    else {
+
       complaints = await Complaint.find({
         userId: req.user.id,
-        isClearedByUser: false   // ✅ safe filter
+        isClearedByUser: false
       }).sort({ createdAt: -1 });
+
     }
 
     res.json(complaints);
-  } catch (err) {
-    console.error("GET /complaints ERROR:", err); // 👈 ADD THIS
-    res.status(500).json({ error: err.message });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message: 'Server Error'
+    });
+
   }
+
 });
+// ==========================================
+// GET MOST URGENT COMPLAINT
+// ==========================================
 
-
-// 3. ADMIN ONLY: GET MOST URGENT COMPLAINT (USING PRIORITY QUEUE)
 router.get('/urgent', protect, adminOnly, async (req, res) => {
   try {
-    // Fetch only complaints that haven't been resolved yet
-    const pendingComplaints = await Complaint.find({ status: 'Pending' });
-    
+
+    const pendingComplaints = await Complaint.find({
+      status: 'Pending'
+    });
+
     if (pendingComplaints.length === 0) {
-      return res.json({ message: 'No pending complaints at the moment!' });
+      return res.json({
+        message: 'No pending complaints'
+      });
     }
 
-    // Insert into our custom O(log N) Max Heap Data Structure
     const pq = new ComplaintPriorityQueue();
+
     pendingComplaints.forEach(c => pq.insert(c));
-    
-    // Extract the one with the highest priority
-    res.json({ complaint: pq.extractMax() });
+
+    res.json({
+      complaint: pq.extractMax()
+    });
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+
+    res.status(500).json({
+      error: err.message
+    });
   }
 });
 
-// ✅ 5. USER: CLEAR (PUT THIS FIRST)
+// ==========================================
+// CLEAR COMPLAINT
+// ==========================================
+
 router.put('/clear/:id', protect, async (req, res) => {
   try {
+
     const complaint = await Complaint.findByIdAndUpdate(
       req.params.id,
-      { isClearedByUser: true },
-      { returnDocument: 'after' }
+      {
+        isClearedByUser: true
+      },
+      {
+        new: true
+      }
     );
 
     res.json(complaint);
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+
+    res.status(500).json({
+      error: err.message
+    });
   }
 });
 
+// ==========================================
+// UPDATE STATUS
+// ==========================================
 
-// ✅ 4. ADMIN UPDATE (PUT THIS AFTER)
 router.put('/:id', protect, adminOnly, async (req, res) => {
   try {
+
     const { status } = req.body;
-    const updatedComplaint = await Complaint.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true }
-    );
+
+    const updatedComplaint =
+      await Complaint.findByIdAndUpdate(
+        req.params.id,
+        { status },
+        { new: true }
+      );
+
     res.json(updatedComplaint);
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+
+    res.status(500).json({
+      error: err.message
+    });
   }
-});// Ensure the router is exported at the very bottom!
+});
+
+// ==========================================
+// EXPORT
+// ==========================================
+
 module.exports = router;

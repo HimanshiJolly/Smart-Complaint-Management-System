@@ -18,18 +18,20 @@ const Navbar = () => {
 
     <nav className="navbar">
 
-      {/* LEFT */}
-      <div className="nav-logo">
+      {/* LOGO SECTION */}
+      <div className="nav-left">
 
         <Link to="/" className="logo-link">
 
-          <img
-            src="/favicon.png"
-            alt="Resolvio Logo"
-            className="logo-image"
-          />
+          <div className="logo-wrapper">
+            <img
+              src="/favicon.png"
+              alt="Resolvio Logo"
+              className="logo-image"
+            />
+          </div>
 
-          <div>
+          <div className="logo-text">
             <h2>Resolvio</h2>
             <p>Smart Complaint Management</p>
           </div>
@@ -38,14 +40,68 @@ const Navbar = () => {
 
       </div>
 
-      {/* RIGHT */}
-      <div className="nav-links">
+      {/* CENTER MENU */}
+      <div className="nav-center">
+
+        <Link to="/" className="nav-menu-link">
+          Home
+        </Link>
+
+       <button
+  className="nav-menu-link nav-btn-link"
+  onClick={() => {
+    const section = document.getElementById("about-section");
+
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  }}
+>
+  About Us
+</button>
+
+        <button
+  className="nav-menu-link nav-btn-link"
+  onClick={() => {
+    const section = document.getElementById("features-section");
+
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  }}
+>
+  Features
+</button>
+
+   <button
+  className="admin-panel-btn"
+  onClick={() => window.location.href = "http://localhost:5174/login"}
+>
+  Admin Panel
+</button>
+
+      </div>
+
+      {/* RIGHT SECTION */}
+      <div className="nav-right">
 
         {user ? (
           <>
             <div className="user-badge">
-              👋 Hi, {user.name}
-              <span>{user.role}</span>
+
+              <div className="user-avatar">
+                {user.name?.charAt(0).toUpperCase()}
+              </div>
+
+              <div className="user-info">
+                <h4>{user.name}</h4>
+                <span>{user.role}</span>
+              </div>
+
             </div>
 
             <button

@@ -5,16 +5,47 @@ import API from "../services/api";
 import "./Home.css";
 
 // ---------------- Landing Page ----------------
+// ---------------- Landing Page ----------------
 const LandingPage = () => {
+
   const navigate = useNavigate();
 
+  // SCROLL FUNCTIONS
+  const scrollToAbout = () => {
+
+    const aboutSection = document.getElementById("about-section");
+
+    if (aboutSection) {
+      aboutSection.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const scrollToFeatures = () => {
+
+    const featuresSection = document.getElementById("features-section");
+
+    if (featuresSection) {
+      featuresSection.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
+
     <div className="landing">
+
       {/* HERO */}
       <section className="hero">
+
         {/* LEFT */}
         <div className="hero-text">
-          <span className="hero-badge">Smart Campus Complaint Platform</span>
+
+          <span className="hero-badge">
+            Smart Campus Complaint Platform
+          </span>
 
           <h1 className="main-title">Resolvio</h1>
 
@@ -24,11 +55,12 @@ const LandingPage = () => {
           </h2>
 
           <p className="hero-desc">
-            Raise campus issues easily, track progress in real-time, and help
-            your university resolve problems faster and smarter.
+            Raise campus issues easily, track progress in real-time,
+            and help your university resolve problems faster and smarter.
           </p>
 
           <div className="landing-buttons">
+
             <button
               onClick={() => navigate("/login")}
               className="btn-submit"
@@ -42,11 +74,14 @@ const LandingPage = () => {
             >
               Register
             </button>
+
           </div>
+
         </div>
 
         {/* RIGHT */}
         <div className="hero-slider">
+
           <img
             src="https://assets.api.gamma.app/eon8uhhu3pco7xo/screenshots/akl2525s6amkn29/r4hay7p1qqxnn6t/slide/4xRJhgC9EZ4FAIxX3fr1HZ2wh7Y"
             alt="campus"
@@ -61,105 +96,144 @@ const LandingPage = () => {
             src="https://inclusion.syr.edu/wp-content/uploads/2016/12/Complaints-768x513.jpg"
             alt="students"
           />
+
         </div>
+
       </section>
 
-      {/* ABOUT */}
-      <section className="about-section">
+           {/* ABOUT */}
+      <section
+        id="about-section"
+        className="about-section"
+      >
+
         <div className="section-heading">
+
           <h2>What is this platform about?</h2>
 
           <p>
             Resolvio helps students report campus issues related to
-            cleanliness, hostel facilities, infrastructure, food quality,
-            administration, and more.
+            cleanliness, hostel facilities, infrastructure,
+            food quality, administration, and more.
           </p>
+
         </div>
 
         {/* FEATURES */}
         <div className="features">
+
           <div className="feature-card">
+
             <div className="icon">📢</div>
 
             <h3>Easy Complaint Submission</h3>
 
             <p>
-              Submit complaints quickly with descriptions and supporting images.
+              Submit complaints quickly with descriptions
+              and supporting images.
             </p>
+
           </div>
 
           <div className="feature-card">
+
             <div className="icon">📊</div>
 
             <h3>Track Progress</h3>
 
             <p>
-              Monitor complaint status and updates in real-time with ease.
+              Monitor complaint status and updates
+              in real-time with ease.
             </p>
+
           </div>
 
           <div className="feature-card">
+
             <div className="icon">⚡</div>
 
             <h3>Faster Resolution</h3>
 
             <p>
-              Helps university administration resolve issues more efficiently.
+              Helps university administration resolve
+              issues more efficiently.
             </p>
+
           </div>
+
         </div>
 
         {/* EXTRA */}
-        <div className="extra-section">
+        <div
+          id="features-section"
+          className="extra-section"
+        >
+
           <h2>Why Choose Resolvio?</h2>
 
           <div className="extra-grid">
+
             <div>
+
               <div className="icon">🎯</div>
 
               <h4>Student-Centered</h4>
 
               <p>
-                Built specifically for students and university environments.
+                Built specifically for students
+                and university environments.
               </p>
+
             </div>
 
             <div>
+
               <div className="icon">🔐</div>
 
               <h4>Secure & Transparent</h4>
 
               <p>
-                Every complaint is tracked with visibility and accountability.
+                Every complaint is tracked with
+                visibility and accountability.
               </p>
+
             </div>
 
             <div>
+
               <div className="icon">📈</div>
 
               <h4>Data Insights</h4>
 
               <p>
-                Analyze complaint trends and improve campus management.
+                Analyze complaint trends and
+                improve campus management.
               </p>
+
             </div>
 
             <div>
+
               <div className="icon">⚙️</div>
 
               <h4>Efficient Workflow</h4>
 
               <p>
-                Prioritize urgent complaints and improve resolution efficiency.
+                Prioritize urgent complaints and
+                improve resolution efficiency.
               </p>
+
             </div>
+
           </div>
+
         </div>
+
       </section>
+
     </div>
   );
 };
-
 // ---------------- MAIN HOME ----------------
 const Home = () => {
   const { user } = useContext(AuthContext);

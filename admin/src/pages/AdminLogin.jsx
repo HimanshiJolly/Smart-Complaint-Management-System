@@ -1,36 +1,32 @@
-import { useState, useContext } from 'react';
+import { useState } from "react";
 
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from "react-router-dom";
 
-import API from '../services/api';
+import axios from "axios";
 
-import { AuthContext } from '../context/AuthContext';
-
-import './Login.css';
+import "./AdminLogin.css";
 
 const AdminLogin = () => {
 
   const [formData, setFormData] = useState({
-
-    adminId: '',
-    password: ''
-
+    adminId: "",
+    password: "",
   });
 
-  const [error, setError] = useState('');
-
-  const { login } = useContext(AuthContext);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
+
+  const API_URL =
+    "http://localhost:5000/api";
 
   const handleChange = (e) => {
 
     setFormData({
-
       ...formData,
-
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
+
   };
 
   const handleSubmit = async (e) => {
@@ -39,24 +35,30 @@ const AdminLogin = () => {
 
     try {
 
-      const response = await API.post(
-        '/auth/login/admin',
+      const response = await axios.post(
+        `${API_URL}/auth/login/admin`,
         formData
       );
 
-      login(
-        response.data.user,
+      localStorage.setItem(
+        "token",
         response.data.token
       );
 
-      navigate('/');
+      localStorage.setItem(
+        "admin",
+        JSON.stringify(response.data.user)
+      );
+
+      navigate("/");
 
     } catch (err) {
 
       setError(
         err.response?.data?.message ||
-        'Invalid Admin Credentials'
+        "Invalid Admin Credentials"
       );
+
     }
   };
 
@@ -94,6 +96,7 @@ const AdminLogin = () => {
               onChange={handleChange}
               required
             />
+
           </div>
 
           <div className="input-group">
@@ -107,6 +110,7 @@ const AdminLogin = () => {
               onChange={handleChange}
               required
             />
+
           </div>
 
           <button
@@ -122,8 +126,8 @@ const AdminLogin = () => {
 
           Need admin access?
 
-          <Link to="/admin-register">
-            Register here
+          <Link to="#">
+            Contact Super Admin
           </Link>
 
         </p>

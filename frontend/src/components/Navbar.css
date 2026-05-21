@@ -1,117 +1,173 @@
 /* =========================
-   🔴 NAVBAR (LIGHT THEME)
+   NAVBAR
 ========================= */
-.navbar {
+
+.navbar{
 
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 70px;
   position: sticky;
   top: 0;
   z-index: 1000;
-  backdrop-filter: blur(16px);
-  background: rgba(255,255,255,0.45);
-  border-bottom: 1px solid rgba(30,58,95,0.08);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 16px 70px;
+
+  background: rgba(255,255,255,0.92);
+
+  backdrop-filter: blur(14px);
+
+  border-bottom: 1px solid rgba(220,38,38,0.08);
+
+  box-shadow: 0 4px 18px rgba(0,0,0,0.04);
 }
 
-.logo-image {
+/* =========================
+   LEFT
+========================= */
 
-  width: 60px;
-  height: 60px;
-
-  object-fit: contain;
-
-  border-radius: 10px;
-
-  padding: 2px;
-
-  background: transparent;
+.nav-left{
+  display: flex;
+  align-items: center;
 }
 
-
-.logo-link {
+.logo-link{
 
   display: flex;
   align-items: center;
 
-  gap: 12px;
+  gap: 14px;
 
   text-decoration: none;
 }
 
-.logo-icon {
+.logo-wrapper{
 
-  width: 52px;
-  height: 52px;
+  width: 62px;
+  height: 62px;
+
+  border-radius: 18px;
+
+  background: linear-gradient(135deg,#fee2e2,#ffffff);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #dbeafe;
-  border-radius: 16px;
-  font-size: 1.4rem;
+
+  box-shadow: 0 6px 18px rgba(220,38,38,0.12);
 }
 
-.nav-logo h2 {
+.logo-image{
 
-  color: var(--primary-navy);
+  width: 52px;
+  height: 52px;
 
-  font-size: 1.6rem;
+  object-fit: contain;
+}
+
+.logo-text h2{
+
+  color: #991b1b;
+
+  font-size: 1.7rem;
+
+  font-weight: 800;
 
   line-height: 1;
 }
 
-.nav-logo p {
-
-  color: var(--text-muted);
-
-  font-size: 0.12rem;
+.logo-text p{
 
   margin-top: 4px;
-}
 
-/* ---------------- LINKS ---------------- */
+  color: #7f1d1d;
+
+  font-size: 0.78rem;
+
+  letter-spacing: 0.4px;
+}
 
 /* =========================
-   🔗 LINKS
+   CENTER MENU
 ========================= */
-.nav-links {
+
+.nav-center{
 
   display: flex;
   align-items: center;
 
-  gap: 16px;
+  gap: 28px;
 }
 
-
-.login-link {
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 44px;
-
-  color: var(--primary-navy);
-
-  font-weight: 600;
+.nav-menu-link{
 
   text-decoration: none;
 
-  padding: 0 12px;
+  color: #374151;
+
+  font-weight: 600;
+
+  position: relative;
 
   transition: 0.3s ease;
 }
 
-.login-link:hover {
-  color: #2563eb;
+.nav-menu-link::after{
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -6px;
+
+  width: 0%;
+  height: 2px;
+
+  background: #dc2626;
+
+  transition: 0.3s ease;
+}
+.nav-btn-link{
+
+  background: transparent;
+
+  border: none;
+
+  cursor: pointer;
+
+  font-size: 1rem;
+
+  font-weight: 600;
+
+  color: #374151;
+
+  transition: 0.3s ease;
 }
 
+.nav-btn-link:hover{
 
-.register-btn {
+  color: #dc2626;
+}
+.nav-menu-link:hover{
 
-  background: var(--primary-navy);
+  color: #dc2626;
+}
+
+.nav-menu-link:hover::after{
+
+  width: 100%;
+}
+
+/* =========================
+   ADMIN BUTTON
+========================= */
+
+.admin-panel-btn{
+
+  background: linear-gradient(135deg,#dc2626,#991b1b);
 
   color: white;
 
@@ -119,59 +175,151 @@
 
   border-radius: 14px;
 
-  font-weight: 600;
-
   text-decoration: none;
 
+  font-weight: 700;
+
   transition: 0.3s ease;
+
+  box-shadow: 0 8px 20px rgba(220,38,38,0.22);
 }
 
-.register-btn:hover {
-
-  background: var(--secondary-navy);
+.admin-panel-btn:hover{
 
   transform: translateY(-2px);
+
+  box-shadow: 0 10px 24px rgba(220,38,38,0.32);
 }
 
-.user-badge {
-
-  background: rgba(255,255,255,0.75);
-
-  border: 1px solid var(--border-color);
-
-  padding: 10px 16px;
-
-  border-radius: 999px;
-
-  color: var(--primary-navy);
-
-  font-weight: 600;
+.nav-right{
 
   display: flex;
   align-items: center;
 
-  gap: 10px;
-
-  font-size: 0.92rem;
+  gap: 16px;
 }
 
-.user-badge span {
+/* LOGIN */
 
-  background: #dbeafe;
+.login-link{
 
-  color: var(--primary-navy);
+  height: 48px;
 
-  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  border-radius: 999px;
+  padding: 0 18px;
+
+  text-decoration: none;
+
+  color: #991b1b;
+
+  font-weight: 700;
+
+  border-radius: 14px;
+
+  transition: 0.3s ease;
+}
+
+.login-link:hover{
+
+  background: rgba(220,38,38,0.08);
+
+  color: #dc2626;
+}
+
+/* REGISTER */
+
+.register-btn{
+
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #991b1b;
+
+  color: white;
+
+  padding: 0 22px;
+
+  border-radius: 14px;
+
+  text-decoration: none;
+
+  font-weight: 700;
+
+  transition: 0.3s ease;
+}
+
+.register-btn:hover{
+
+  background: #dc2626;
+
+  transform: translateY(-2px);
+}
+
+/* =========================
+   USER BADGE
+========================= */
+
+.user-badge{
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  background: #fff5f5;
+
+  border: 1px solid #fecaca;
+
+  padding: 10px 14px;
+
+  border-radius: 16px;
+}
+
+.user-avatar{
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(135deg,#dc2626,#991b1b);
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+}
+
+.user-info h4{
+
+  font-size: 0.92rem;
+
+  color: #7f1d1d;
+}
+
+.user-info span{
 
   font-size: 0.72rem;
+
+  color: #b91c1c;
 
   text-transform: capitalize;
 }
 
+/* =========================
+   LOGOUT
+========================= */
 
-.logout-btn {
+.logout-btn{
 
   border: none;
 
@@ -179,70 +327,86 @@
 
   color: white;
 
-  padding: 12px 20px;
+  padding: 12px 18px;
 
   border-radius: 14px;
 
-  font-weight: 600;
-
   cursor: pointer;
+
+  font-weight: 700;
 
   transition: 0.3s ease;
 }
 
-.logout-btn:hover {
+.logout-btn:hover{
 
   background: #dc2626;
 
   transform: translateY(-2px);
 }
 
+/* =========================
+   RESPONSIVE
+========================= */
 
-@media(max-width: 900px){
+@media(max-width: 1100px){
 
-  .navbar {
-
-    padding: 18px 24px;
+  .navbar{
 
     flex-direction: column;
 
-    gap: 18px;
+    gap: 20px;
+
+    padding: 18px 24px;
   }
 
-  .nav-links {
-
-    width: 100%;
-
-    justify-content: center;
+  .nav-center{
 
     flex-wrap: wrap;
+
+    justify-content: center;
   }
 
-  .nav-logo h2 {
+  .nav-right{
 
-    font-size: 1.4rem;
+    flex-wrap: wrap;
+
+    justify-content: center;
   }
 }
 
-@media(max-width: 500px){
+@media(max-width: 600px){
 
-  .logo-link {
+  .logo-link{
 
     flex-direction: column;
 
     text-align: center;
   }
 
-  .user-badge {
+  .nav-center{
 
-    font-size: 0.8rem;
-
-    padding: 8px 12px;
+    gap: 16px;
   }
 
+  .admin-panel-btn,
   .register-btn,
-  .logout-btn {
+  .logout-btn{
 
-    padding: 10px 16px;
+    width: 100%;
+
+    text-align: center;
+  }
+
+  .nav-right{
+
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .user-badge{
+
+    width: 100%;
+    justify-content: center;
   }
 }
