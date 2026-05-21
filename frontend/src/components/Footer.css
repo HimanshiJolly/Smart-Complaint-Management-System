@@ -27,11 +27,7 @@
    🏷 BRAND
 ========================= */
 .footer-brand h2 {
-<<<<<<< HEAD
   color: var(--primary);
-=======
-  color:#2563eb;
->>>>>>> c68a02eb3e6298aa91b0a9121685090fe9767bce
   margin-bottom: 10px;
 }
 
@@ -56,16 +52,6 @@
 .footer-links li {
   margin-bottom: 8px;
 }
-<<<<<<< HEAD
-
-=======
-.footer-links h4 {
-  color: #2563eb;
-}
-.footer-contact h4 {
-  color: #2563eb#2563eb;
-}
->>>>>>> c68a02eb3e6298aa91b0a9121685090fe9767bce
 .footer-links a {
   text-decoration: none;
   color: var(--text-secondary);
@@ -73,11 +59,7 @@
 }
 
 .footer-links a:hover {
-<<<<<<< HEAD
   color: var(--primary);
-=======
-  color:  #2563eb;
->>>>>>> c68a02eb3e6298aa91b0a9121685090fe9767bce
 }
 
 /* =========================
