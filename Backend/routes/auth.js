@@ -18,19 +18,22 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 
-const storage = multer.diskStorage({
+const cloudinary = require("../config/cloudinary");
 
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
+const { CloudinaryStorage } =
+  require("multer-storage-cloudinary");
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+
+  params: {
+    folder: "resolvio-users",
+    allowed_formats: ["jpg", "png", "jpeg"],
   },
-
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-
 });
 
 const upload = multer({ storage });
+
 
 
 // ===================================================

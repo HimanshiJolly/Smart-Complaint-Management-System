@@ -25,14 +25,18 @@ if (!fs.existsSync(uploadDir)) {
 // MULTER SETUP
 // ==========================================
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
+const cloudinary = require("../config/cloudinary");
 
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
+const { CloudinaryStorage } =
+  require("multer-storage-cloudinary");
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+
+  params: {
+    folder: "resolvio-complaints",
+    allowed_formats: ["jpg", "png", "jpeg"],
+  },
 });
 
 const upload = multer({ storage });
@@ -62,7 +66,7 @@ router.post('/', protect, upload.single('image'), async (req, res) => {
     }
 
     const imageUrl = req.file
-      ? `/uploads/${req.file.filename}`
+      ? req.file.path
       : null;
 
     const newComplaint = new Complaint({

@@ -168,8 +168,10 @@ router.put(
         }
 
         // SAVE NEW PHOTO
-        user.passportPhoto =
-          `/uploads/${req.file.filename}`;
+        passportPhoto:
+  req.files?.passportPhoto
+    ? req.files.passportPhoto[0].path
+    : null;
 
       }
 

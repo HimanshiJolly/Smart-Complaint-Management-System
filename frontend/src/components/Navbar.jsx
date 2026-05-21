@@ -184,13 +184,11 @@ const Navbar = () => {
 
               ) : (
 
-                <div className="user-avatar">
-
-                  {user.fullName
-                    ?.charAt(0)
-                    .toUpperCase()}
-
-                </div>
+                <img
+  src={user?.passportPhoto}
+  alt="profile"
+  className="navbar-profile-img"
+/>
 
               )}
 

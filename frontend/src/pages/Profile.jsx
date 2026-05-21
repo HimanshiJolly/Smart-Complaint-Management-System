@@ -5,37 +5,26 @@ import "./Profile.css";
 function Profile() {
   const token = localStorage.getItem("token");
 
+  const API_URL = "http://localhost:5000/api";
+
   const [user, setUser] = useState(null);
-
-  const [editMode, setEditMode] =
-    useState(false);
-
-  const [formData, setFormData] =
-    useState({});
-
-  const [photo, setPhoto] =
-    useState(null);
-
-  const API_URL =
-    "http://localhost:5000/api";
+  const [editMode, setEditMode] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [photo, setPhoto] = useState(null);
 
   // =========================
   // FETCH PROFILE
   // =========================
-
   const fetchProfile = async () => {
     try {
-      const res = await axios.get(
-        `${API_URL}/users/profile`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axios.get(`${API_URL}/users/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setUser(res.data);
-      setFormData(res.data);
+      setFormData(res.data || {});
     } catch (err) {
       console.log(err);
     }
@@ -46,57 +35,41 @@ function Profile() {
   }, []);
 
   // =========================
-  // HANDLE CHANGE
+  // HANDLE INPUT CHANGE
   // =========================
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]:
-        e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
   // =========================
   // SAVE PROFILE
   // =========================
-
   const saveProfile = async () => {
     try {
       const data = new FormData();
 
-      Object.keys(formData).forEach(
-        (key) => {
-          data.append(
-            key,
-            formData[key]
-          );
-        }
-      );
+      Object.keys(formData).forEach((key) => {
+        data.append(key, formData[key]);
+      });
 
       if (photo) {
-        data.append(
-          "passportPhoto",
-          photo
-        );
+        data.append("passportPhoto", photo);
       }
 
-      await axios.put(
-        `${API_URL}/users/profile`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type":
-              "multipart/form-data",
-          },
-        }
-      );
+      await axios.put(`${API_URL}/users/profile`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       alert("Profile Updated");
 
       setEditMode(false);
-
+      setPhoto(null);
       fetchProfile();
     } catch (err) {
       console.log(err);
@@ -107,98 +80,62 @@ function Profile() {
 
   return (
     <div className="profile-page">
-
       <div className="profile-card">
-
-        {/* LEFT */}
-
+        
+        {/* LEFT SIDE */}
         <div className="profile-left">
-
           <img
-            src={
-              user.passportPhoto
-                ? `http://localhost:5000${user.passportPhoto}`
-                : "/default-avatar.png"
-            }
-            alt=""
+            src={user?.passportPhoto}
+            alt="profile"
             className="profile-image"
           />
 
           {editMode && (
             <input
               type="file"
-              onChange={(e) =>
-                setPhoto(
-                  e.target.files[0]
-                )
-              }
+              onChange={(e) => setPhoto(e.target.files[0])}
             />
           )}
 
-          <h2>
-            {user.fullName}
-          </h2>
+          <h2>{user.fullName}</h2>
+          <p>{user.department}</p>
+          <p>Semester {user.semester}</p>
 
-          <p>
-            {user.department}
-          </p>
-
-          <p>
-            Semester {user.semester}
-          </p>
-
-          <span className="role-badge">
-            Student
-          </span>
-
+          <span className="role-badge">Student</span>
         </div>
 
-        {/* RIGHT */}
-
+        {/* RIGHT SIDE */}
         <div className="profile-right">
-
           <div className="profile-top">
-
-            <h1>
-              My Profile
-            </h1>
+            <h1>My Profile</h1>
 
             {!editMode ? (
               <button
-                onClick={() =>
-                  setEditMode(true)
-                }
+                onClick={() => setEditMode(true)}
                 className="edit-btn"
               >
                 Edit Profile
               </button>
             ) : (
               <div className="btn-group">
-
-                <button
-                  onClick={saveProfile}
-                  className="save-btn"
-                >
+                <button onClick={saveProfile} className="save-btn">
                   Save Changes
                 </button>
 
                 <button
                   onClick={() => {
                     setEditMode(false);
-                    setFormData(user);
+                    setFormData(user || {});
                   }}
                   className="cancel-btn"
                 >
                   Cancel
                 </button>
-
               </div>
             )}
-
           </div>
 
           <div className="profile-grid">
-
             {[
               "fullName",
               "collegeEmail",
@@ -217,46 +154,25 @@ function Profile() {
               "dob",
               "gender",
             ].map((field) => (
-
-              <div
-                className="info-card"
-                key={field}
-              >
-
-                <label>
-                  {field}
-                </label>
+              <div className="info-card" key={field}>
+                <label>{field}</label>
 
                 {editMode ? (
-
                   <input
                     type="text"
                     name={field}
-                    value={
-                      formData[field] || ""
-                    }
-                    onChange={
-                      handleChange
-                    }
+                    value={formData[field] || ""}
+                    onChange={handleChange}
                   />
-
                 ) : (
-
-                  <p>
-                    {user[field]}
-                  </p>
-
+                  <p>{user[field]}</p>
                 )}
-
               </div>
             ))}
-
           </div>
-
         </div>
 
       </div>
-
     </div>
   );
 }

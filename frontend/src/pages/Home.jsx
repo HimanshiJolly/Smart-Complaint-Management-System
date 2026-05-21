@@ -507,6 +507,13 @@ const Home = () => {
                   <p className="description">
                     {complaint.description}
                   </p>
+                  {complaint.imageUrl && (
+  <img
+    src={complaint.imageUrl}
+    alt="complaint"
+    className="complaint-image"
+  />
+)}
 
                   <div className="card-footer">
 
