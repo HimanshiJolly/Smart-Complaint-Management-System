@@ -17,7 +17,16 @@ const userRoutes = require("./routes/users");
 
 // ================= MIDDLEWARE =================
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://smart-complaint-management-system-flax.vercel.app/",
+    "https://smart-complaint-management-system-2-eight.vercel.app"
+  ],
+  credentials: true
+}));
+
 
 app.use(express.json());
 
