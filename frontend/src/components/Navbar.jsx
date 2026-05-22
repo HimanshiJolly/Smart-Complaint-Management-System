@@ -121,7 +121,7 @@ const Navbar = () => {
       <button
         className="admin-panel-btn"
         onClick={() =>
-          (window.location.href = "https://smart-complaint-management-system-2-eight.vercel.app")
+          (window.location.href = "http://localhost:5173/login")
         }
       >
         Admin Panel

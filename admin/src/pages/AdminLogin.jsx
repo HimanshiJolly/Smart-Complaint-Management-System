@@ -101,7 +101,7 @@ const AdminLogin = () => {
       <button
         className="home-btn"
         onClick={() =>
-          (window.location.href = "https://smart-complaint-management-system-flax.vercel.app/")
+          (window.location.href = "http://localhost:5174/")
         }
       >
         ⬅ Home
